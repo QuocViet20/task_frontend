@@ -1,4 +1,7 @@
-import React,{useState} from "react";
+
+// library
+import React, { memo } from "react";
+import { useMutation } from "@tanstack/react-query";
 import {
   Form,
   FormGroup,
@@ -6,30 +9,49 @@ import {
   Card,
   FloatingLabel,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Role } from "../models/user";
+import { Link, useNavigate } from "react-router-dom";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+//types
+import { UserCreateAccount } from "../../types";
+
+//api_service
+import { creteUser } from "../../api/serviceApi";
+import { toast } from "react-toastify";
 
 
-type User = {
-  email: string;
-  username: string;
-  password: string;
-  role: Role;
-  userId: string;
-  confirmPassword: string;
-};
-
-const Register: React.FC = () => {
+const Register: React.FC = memo(() => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<User>();
-   console.log(watch('confirmPassword'));
+  } = useForm<UserCreateAccount>();
 
-  const onsubmit: SubmitHandler<User> = data =>console.log(data)
+  const onsubmit: SubmitHandler<UserCreateAccount> = (data: any) => {
+    mutate(data, {
+      onSuccess: () => { },
+      onError: () => { }
+    })
+  }
+
+  const { mutate } = useMutation({
+    mutationFn: (body: UserCreateAccount) => {
+      return creteUser(body)
+    },
+    onError: () => {
+      toast.error("register error", {
+        position: toast.POSITION.TOP_RIGHT,
+      })
+    },
+    onSuccess: () => {
+      navigate("/login")
+      toast.success(" register success", {
+        position: toast.POSITION.TOP_RIGHT,
+      })
+    }
+  })
 
   return (
     <div
@@ -156,6 +178,6 @@ const Register: React.FC = () => {
       </Card>
     </div>
   );
-};
+});
 
 export default Register
