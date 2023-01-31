@@ -12,7 +12,7 @@ export interface UserCreate {
   email: string;
   password: string;
   accessToken: string;
-  role:Role;
+  role: Role;
 }
 
 export interface UserCreateAccount {
@@ -27,7 +27,7 @@ export interface IFormUserCreateAccount {
   email: string;
   password: string;
   confirmPassword: string;
-  role:Role
+  role: Role;
 }
 
 export interface UserLogin {
@@ -40,16 +40,6 @@ export interface AuthData {
   email: string;
   accessToken: string;
   role: Role;
-}
-
-export interface Task {
-  id: number | undefined;
-  startTime: string;
-  endTime: string;
-  assignee: string;
-  progress: string;
-  title: string;
-  status: Status;
 }
 
 export interface ITaskFormData {
@@ -65,4 +55,9 @@ export interface Assignee {
   id: number | undefined;
   name: string;
   value: string;
+}
+
+export interface Option {
+  label: string;
+  value: any;
 }
