@@ -4,3 +4,8 @@ export enum Status {
   Done = "Done",
   Doing = "Doing",
 }
+
+export enum Role {
+  Admin = "Admin",
+  User = "User"
+}

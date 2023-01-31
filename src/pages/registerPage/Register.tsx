@@ -1,4 +1,6 @@
 
+// style
+import './RegisterPage.css'
 // library
 import React, { memo } from "react";
 import { useMutation } from "@tanstack/react-query";
@@ -11,13 +13,14 @@ import {
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { toast } from "react-toastify";
 
 //types
-import { UserCreateAccount } from "../../types";
+import { UserCreateAccount, UserCreate, Role } from "../../types";
 
 //api_service
-import { creteUser } from "../../api/serviceApi";
-import { toast } from "react-toastify";
+import { createUser } from "../../api/serviceApi";
+
 
 
 const Register: React.FC = memo(() => {
@@ -30,15 +33,23 @@ const Register: React.FC = memo(() => {
   } = useForm<UserCreateAccount>();
 
   const onsubmit: SubmitHandler<UserCreateAccount> = (data: any) => {
-    mutate(data, {
-      onSuccess: () => { },
+    // console.log(data)
+    const newUser: UserCreate = {
+      email: data.email,
+      username: data.username,
+      password: data.password,
+      accessToken: "gfisjfosahfdhisa",
+      role: Role.Admin,
+    }
+    mutate(newUser, {
+      onSuccess: () => {},
       onError: () => { }
     })
   }
 
   const { mutate } = useMutation({
-    mutationFn: (body: UserCreateAccount) => {
-      return creteUser(body)
+    mutationFn: (body: UserCreate) => {
+      return createUser(body)
     },
     onError: () => {
       toast.error("register error", {
@@ -46,21 +57,16 @@ const Register: React.FC = memo(() => {
       })
     },
     onSuccess: () => {
-      navigate("/login")
       toast.success(" register success", {
         position: toast.POSITION.TOP_RIGHT,
       })
+      navigate("/login")
     }
   })
 
   return (
-    <div
-      className="container d-flex justify-content-center"
-      style={{ marginTop: "50px" }}
-    >
-      <Card
-        style={{ width: "25rem", padding: "15px", backgroundColor: "#f8f9fa" }}
-      >
+    <div className="container d-flex justify-content-center marginTop">
+      <Card className='card_container'>
         <h3 className="text-center text-success font-italic">
           Đăng ký tài khoản
         </h3>

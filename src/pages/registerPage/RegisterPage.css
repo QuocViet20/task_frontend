@@ -1,0 +1,9 @@
+.marginTop {
+  margin-top: 50px;
+}
+
+.card_container {
+  width: 25rem;
+  padding: 15px;
+  background-color: #f8f9fa;
+}

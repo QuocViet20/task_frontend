@@ -1,60 +1,100 @@
 import React from "react";
-import { Form, FormGroup, Button, Card, FloatingLabel } from "react-bootstrap";
+import { Form, FormGroup, Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useMutation } from "@tanstack/react-query";
+import { memo } from "react";
 
-type User = {
-  account:string,
-  password: string;
-  
-};
+// types
+import { UserLogin } from "../../types";
 
-const Login: React.FC = () => {
+// api_service
+import { apiClient } from "../../api/serviceApi";
+
+// hooks
+import useAuth  from '../../hooks/useAuth'
+
+const Login: React.FC = memo(() => {
+  const { setAuth, authData } = useAuth();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<User>();
- 
+  } = useForm<UserLogin>();
 
-  const onsubmit: SubmitHandler<User> = (data) => console.log(data);
+  // const loginMutation = useMutation({
+  //   mutationFn: (body: UserLogin) => {
+  //     return userLogin(body);
+  //   },
+  //   onError: (data: any) => {
+  //     toast.error(`${data.response.data}`, {
+  //       position: toast.POSITION.BOTTOM_RIGHT,
+  //     });
+  //   },
+  //   onSuccess: () => {
+  //     navigate("/");
+  //     toast.success("login success",{
+  //       position: toast.POSITION.TOP_RIGHT,
+  //     });
+  //   }
+  // })
+ 
+  const onsubmit: SubmitHandler<UserLogin> = async (data: any) => {
+    const response = await apiClient.get((`/users?email=${data.email}&password=${data.password}`));
+    console.log(response.data.length)
+    if(response.data.length === 0){
+      toast.error('login error',{
+        position: toast.POSITION.TOP_RIGHT,
+      })
+    }
+    setAuth({
+      accessToken: response.data[0].accessToken,
+      username: response.data[0].username,
+      email: response.data[0].email,
+      role: response.data[0].role,
+    });
+    console.log(authData)
+    navigate("/")
+    toast.success("login success",{
+      position:toast.POSITION.TOP_RIGHT
+    })
+  }
 
   return (
-    <div
-      className="container d-flex justify-content-center"
-      style={{ marginTop: "50px" }}
-    >
-      <Card
-        style={{ width: "25rem", padding: "15px", backgroundColor: "#f8f9fa" }}
-      >
+    <div className="container d-flex justify-content-center marginTop">
+      <Card className="card_container">
         <h3 className="text-center text-success font-italic">Đăng nhập</h3>
         <Form onSubmit={handleSubmit(onsubmit)}>
           <FormGroup className="mt-2">
             <Form.Label
-              className="font-weight-bold mx-1"
-              style={{ fontSize: "20px" }}
-            >
+              className="font-weight-bold mx-1 label_text">
               Tài khoản
             </Form.Label>
             <Form.Control
               id="exampleEmail"
-              placeholder="Email or Username"
+              placeholder="Email"
               type="text"
-              {...register("account", {
+              {...register("email", {
                 required: true,
+                pattern: /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$/,
               })}
             />
-            {errors.account?.type === "required" && (
+            {errors.email?.type === "required" && (
               <span className="mt-1 text-danger">
-                Hãy nhập email hoặc Username của bạn
+                Hãy nhập email của bạn
               </span>
             )}
+             {errors.email?.type === "pattern" && (
+                <span className="mt-1 text-danger">Đây phải là Email</span>
+              )}
           </FormGroup>
           <FormGroup className="mt-2">
             <Form.Label
-              className="font-weight-bold mx-1"
-              style={{ fontSize: "20px" }}
-            >
+              className="font-weight-bold mx-1 label_text">
               Mật khẩu
             </Form.Label>
             <Form.Control
@@ -97,6 +137,6 @@ const Login: React.FC = () => {
       </Card>
     </div>
   );
-};
+});
 
 export default Login;
