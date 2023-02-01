@@ -12,7 +12,7 @@ export interface UserCreate {
   email: string;
   password: string;
   accessToken: string;
-  role:Role;
+  role: Role;
 }
 
 export interface UserCreateAccount {
@@ -27,7 +27,7 @@ export interface IFormUserCreateAccount {
   email: string;
   password: string;
   confirmPassword: string;
-  role:Role
+  role: Role;
 }
 
 export interface UserLogin {
@@ -71,4 +71,8 @@ export interface Assignee {
 export interface Option {
   label: string;
   value: any;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 9e329a7ef61a58af79c754f72586bfb284e528ff
