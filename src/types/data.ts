@@ -42,16 +42,6 @@ export interface AuthData {
   role: Role;
 }
 
-export interface Task {
-  id: number | undefined;
-  startTime: string;
-  endTime: string;
-  assignee: string;
-  progress: string;
-  title: string;
-  status: Status;
-}
-
 export interface ITaskFormData {
   startTime: string;
   endTime: string;
@@ -61,8 +51,24 @@ export interface ITaskFormData {
   status: Status;
 }
 
+export interface Task{
+  id: number | undefined;
+  startTime: string;
+  endTime: string;
+  assignee: string;
+  progress: string;
+  title: string;
+  status: Status;
+}
+
+
 export interface Assignee {
   id: number | undefined;
   name: string;
   value: string;
+}
+
+export interface Option {
+  label: string;
+  value: any;
 }

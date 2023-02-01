@@ -9,12 +9,12 @@ import { useMutation } from "@tanstack/react-query";
 import { UserCreate, Role, IFormUserCreateAccount } from "../../types";
 
 // style
-import "./UserForm.css"
+import "./CreateUser.css"
 
 // service_api
 import { createUser } from "../../api/serviceApi";
 
-const UserForm: React.FC = memo(() => {
+const CreateUser: React.FC = memo(() => {
   const navigate = useNavigate();
   const {
     register,
@@ -190,4 +190,4 @@ const UserForm: React.FC = memo(() => {
   )
 })
 
-export default UserForm
+export default CreateUser

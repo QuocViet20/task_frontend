@@ -1,9 +1,13 @@
-import { IFormUserCreateAccount, UserCreate } from "./data";
+import { ITaskFormData, Option } from "./data";
 
-export interface UserFormProps {
+
+
+export interface TaskFormProps {
   formTitle: string;
+  assigneOptions: Option[];
+  defaultValues: ITaskFormData;
   submitButtonLabel: string;
   submittingButtonLabel: string;
   isSubmitting: boolean;
-  onSubmit: (data: IFormUserCreateAccount) => void;
+  onSubmit: (data: ITaskFormData) => void
 }
