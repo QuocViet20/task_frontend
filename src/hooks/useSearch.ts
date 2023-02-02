@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { clearTimeout } from "timers";
 
 export default function useDebounce( value: string, delay: any){
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -13,4 +12,6 @@ export default function useDebounce( value: string, delay: any){
       clearTimeout(handler)
     };
   },[value,delay])
+
+  return debouncedValue;
 }

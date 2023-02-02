@@ -5,6 +5,7 @@ export interface User {
   username: string;
   email: string;
   password: string;
+  role:Role;
 }
 
 export interface UserCreate {
@@ -51,7 +52,7 @@ export interface ITaskFormData {
   status: Status;
 }
 
-export interface Task{
+export interface Task {
   id: number | undefined;
   startTime: string;
   endTime: string;
@@ -71,8 +72,15 @@ export interface Assignee {
 export interface Option {
   label: string;
   value: any;
-<<<<<<< HEAD
 }
-=======
+export interface EditUserForm {
+  email: string;
+  username: string;
+  role: Role;
 }
->>>>>>> 9e329a7ef61a58af79c754f72586bfb284e528ff
+export interface ResetPasswordForm {
+  email: string;
+  password: string;
+  newPassWord: string;
+  confirmPassword: string;
+}

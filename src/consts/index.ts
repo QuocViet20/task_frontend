@@ -13,5 +13,5 @@ export const DEFAULT_TASK_FORM_DATA: ITaskFormData = {
   endTime: "",
   assignee: "",
   progress: "0",
-  status: Status.All,
+  status: Status.Todo,
 };

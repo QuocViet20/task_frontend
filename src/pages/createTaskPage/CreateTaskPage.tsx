@@ -17,7 +17,7 @@ import {
   SUBMIT_BUTTON_LABEL, 
   SUBMITTING_BUTTON_LABEL 
 } from "./consts";
-import TaskForm from "../../components/elements/TaskForm/TaskForm";
+import TaskForm from "../../components/elements/taskForm/TaskForm";
 
 const CreateTaskPage = memo(() => {
 
@@ -49,11 +49,12 @@ const CreateTaskPage = memo(() => {
       toast.success("addTask success",{
         position: toast.POSITION.TOP_RIGHT
       })
+      
     }
   })
 
   const onSubmit = (data: ITaskFormData) =>{
-    createTaskMutation.mutate(data)
+    createTaskMutation.mutate(data);
   }
   
 

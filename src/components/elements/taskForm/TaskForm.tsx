@@ -31,22 +31,25 @@ const TaskForm = memo(
     const [valueRange, setValueRange ] = useState<string>(defaultValues.progress);
     const {
       register,
+      reset,
       handleSubmit,
-      watch,
       formState: { errors },
     } = useForm<ITaskFormData>({
       resolver: yupResolver(schema),
       defaultValues,
     });
 
-    // const onSubmit = (data: ITaskFormData) => console.log(data);
+    const onSubmitTask = (data:ITaskFormData) => {
+      onSubmit(data);
+      reset(defaultValues)
+    }
 
     return (
       <div className="container d-flex justify-content-center mt-4">
         <Card className="cardContainer">
           <Card.Header className="text-center text-success"><h2>{formTitle}</h2></Card.Header>
           <Card.Body>
-            <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form onSubmit={handleSubmit(onSubmitTask)}>
               <Form.Group className="mb-2">
                 <Form.Label
                   className="font-weight-bold mx-1 label_text">

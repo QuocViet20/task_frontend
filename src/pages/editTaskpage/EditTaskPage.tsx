@@ -1,15 +1,16 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import _ from "lodash"
 import { memo, useMemo } from "react";
-import { Spinner } from "react-bootstrap";
+
 import { toast } from "react-toastify";
 import { useParams, useNavigate} from "react-router-dom";
 
 //components
-import TaskForm from "../../components/elements/TaskForm/TaskForm";
+import TaskForm from "../../components/elements/taskForm/TaskForm";
+import Loading from "../../components/elements/loading/Loading";
 
 // types
-import { ITaskFormData, Task, User,Status } from "../../types";
+import { ITaskFormData, User, Status } from "../../types";
 import { DEFAULT_TASK_FORM_DATA } from "../../consts";
 
 import { 
@@ -31,7 +32,7 @@ const EditTaskPage = memo(() => {
     isLoading: isTaskLoading,
     isError: isTaskError,
   } = useQuery({
-    queryFn: async () => await getTask(taskId as string),
+    queryFn: () =>  getTask(taskId as string),
     enabled: !_.isNil(taskId)
   });
 
@@ -91,24 +92,21 @@ const EditTaskPage = memo(() => {
 
   if (isTaskError) 
   return  <h1 className="container text-danger text-center mt-4">Not found data</h1>
-  if (isTaskLoading)
-    return (
-      <div className="loading container mt-4 text-center">
-       <Spinner animation="border" variant="success" />
-       <Spinner animation="border" variant="danger" />
-      <Spinner animation="border" variant="warning" />
-      </div>
-    );
+  if (isTaskLoading){
+    return <Loading />
+  }
+
+   
 
   return (
     <TaskForm 
-    formTitle={TASK_FORM_TITLE}
-    assigneOptions={assigneOptions}
-    defaultValues={defaultValues}
-    submitButtonLabel={SUBMIT_BUTTON_LABEL}
-    submittingButtonLabel={SUBMITTING_BUTTON_LABEL}
-    isSubmitting={editTaskMutation.isLoading} 
-    onSubmit={onSubmit}
+      formTitle={TASK_FORM_TITLE}
+      assigneOptions={assigneOptions}
+      defaultValues={defaultValues}
+      submitButtonLabel={SUBMIT_BUTTON_LABEL}
+      submittingButtonLabel={SUBMITTING_BUTTON_LABEL}
+      isSubmitting={editTaskMutation.isLoading} 
+      onSubmit={onSubmit}
     />
   )
 

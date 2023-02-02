@@ -36,7 +36,7 @@ export const getTasks = (
     selectedStatus?: undefined;
   },
 ) => {
-  return apiClient.get<Task>(`/task`, {
+  return apiClient.get<Task>(`/tasks`, {
     params: {
       _page: params.currentPage,
       _limit: params.limit,
@@ -59,7 +59,7 @@ export const getUsers = (
     debouncedSearchHook: string;
   },
 ) => {
-  return apiClient.get<User>(`/Users`, {
+  return apiClient.get<User>(`/Users?role=User`, {
     params: {
       _page: params.currentPage,
       _limit: params.limit,
@@ -69,10 +69,13 @@ export const getUsers = (
 }
 
 export const getUserId = (userId: string) =>
-  apiClient.get<User>(`/users/${userId}`)
+  apiClient.get<UserCreate>(`/users/${userId}`)
 
 export const deleteTask = (id: number) =>
   apiClient.delete(`/tasks/${id}`)
 
-  export const deleteUser = (id: number) =>
+export const deleteUser = (id: number) =>
   apiClient.delete(`/users/${id}`)
+
+export const updateUser = ( userId: string, user: UserCreate) =>
+  apiClient.put<UserCreate>(`/users/${userId}`, user)

@@ -7,6 +7,9 @@ import Register from './pages/registerPage/Register';
 import CreateUser from './pages/createUserPage/CreateUserPage';
 import CreateTaskPage from './pages/createTaskPage/CreateTaskPage';
 import EditTaskPage from './pages/editTaskpage/EditTaskPage';
+import UserListPage from './pages/userListPage/UserListPage';
+import UserInformation from './pages/userInfomationPage/UserInfomationPage';
+import EditUserPage from './pages/editUser/EditUser';
 
 
 function App() {
@@ -18,6 +21,9 @@ function App() {
       <Route path="/createUser" element={<CreateUser />} />
       <Route path="/createTask" element={<CreateTaskPage />} />
       <Route path="/editTask/:taskId" element={<EditTaskPage />} />
+      <Route path="/users" element={<UserListPage />} />
+      <Route path="/users/:userId" element={<UserInformation />} />
+      <Route path="/editUser/:userId" element={<EditUserPage />} />
     </Routes>
   );
 }
