@@ -10,6 +10,8 @@ import EditTaskPage from './pages/editTaskpage/EditTaskPage';
 import UserListPage from './pages/userListPage/UserListPage';
 import UserInformation from './pages/userInfomationPage/UserInfomationPage';
 import EditUserPage from './pages/editUser/EditUser';
+import ResetPasswordPage from './pages/resetPasswordPage/ResetPasswordPage';
+import TaskListPage from './pages/tasksListPage/TaskListPgae';
 
 
 function App() {
@@ -20,10 +22,12 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/createUser" element={<CreateUser />} />
       <Route path="/createTask" element={<CreateTaskPage />} />
-      <Route path="/editTask/:taskId" element={<EditTaskPage />} />
+      <Route path="/tasks/:taskId/edit" element={<EditTaskPage />} />
       <Route path="/users" element={<UserListPage />} />
       <Route path="/users/:userId" element={<UserInformation />} />
-      <Route path="/editUser/:userId" element={<EditUserPage />} />
+      <Route path="/users/:userId/edit" element={<EditUserPage />} />
+      <Route path="/users/:userId/resetPassword" element={<ResetPasswordPage />} />
+      <Route path="/tasks" element={<TaskListPage />} />
     </Routes>
   );
 }

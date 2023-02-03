@@ -90,9 +90,15 @@ const EditUserFormComponent = ({
             </Form.Select>
           </Form.Group>
         <div className=" d-flex justify-content-between">
-          <Button className="mt-3" type="submit">
-          Edit
-          </Button>
+        {isSubmitting? 
+                ( <Button className="mt-3" type="submit">
+                    {submittingButtonLabel}
+                  </Button>
+                ):
+                (<Button className="mt-3" type="submit">
+                  {submitButtonLabel}
+                  </Button>)
+                }  
           
           <Link to={"/"} className =" btn btn-warning mt-3 mx-2"> Back</Link>
           

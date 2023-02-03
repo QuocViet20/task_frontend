@@ -46,6 +46,34 @@ export const getTasks = (
   })
 }
 
+export const getTaskAssignee = (
+  params:
+  | {
+    currentPage: number;
+    limit: number;
+    debouncedSearchHook: string;
+    selectedStatus: string;
+    assignee: string
+  }
+  | {
+    currentPage: number;
+    limit: number;
+    debouncedSearchHook: string;
+    assignee: string;
+    selectedStatus?: undefined;
+  },
+) => {
+  return apiClient.get<Task>(`/tasks`, {
+    params: {
+      _page: params.currentPage,
+      _limit: params.limit,
+      q: params.debouncedSearchHook,
+      status: params.selectedStatus,
+      assignee: params.assignee,
+    }
+  })
+}
+
 export const getUsers = (
   params:
   | {

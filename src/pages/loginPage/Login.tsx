@@ -56,6 +56,7 @@ const Login: React.FC = memo(() => {
       username: response.data[0].username,
       email: response.data[0].email,
       role: response.data[0].role,
+      userId:response.data[0].id,
     });
     console.log(authData)
     navigate("/")

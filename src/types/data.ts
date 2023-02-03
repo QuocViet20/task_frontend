@@ -41,6 +41,7 @@ export interface AuthData {
   email: string;
   accessToken: string;
   role: Role;
+  userId: number;
 }
 
 export interface ITaskFormData {
@@ -62,7 +63,6 @@ export interface Task {
   status: Status;
 }
 
-
 export interface Assignee {
   id: number | undefined;
   name: string;
@@ -79,8 +79,7 @@ export interface EditUserForm {
   role: Role;
 }
 export interface ResetPasswordForm {
-  email: string;
   password: string;
-  newPassWord: string;
+  newPassword: string;
   confirmPassword: string;
 }

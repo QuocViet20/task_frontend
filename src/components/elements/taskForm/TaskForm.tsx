@@ -41,7 +41,9 @@ const TaskForm = memo(
 
     const onSubmitTask = (data:ITaskFormData) => {
       onSubmit(data);
-      reset(defaultValues)
+      if(formTitle === "Create_task"){
+        reset(defaultValues)
+      }
     }
 
     return (
@@ -74,7 +76,7 @@ const TaskForm = memo(
                 >
                   <option value="">Assignee</option>
                   {assigneOptions.map((assignee) => (
-                    <option value={assignee.label}>{assignee.label}</option>
+                    <option value={assignee.value}>{assignee.label}</option>
                   ))}
                 </Form.Select>
                 <span className="mt-1 text-danger">

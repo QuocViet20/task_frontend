@@ -1,3 +1,4 @@
+import { number } from "yup";
 import { EditUserForm, ITaskFormData, Option, ResetPasswordForm, UserCreate } from "./data";
 
 export interface TaskFormProps {
@@ -18,13 +19,8 @@ export interface UserEditFormProps {
   onSubmit: (data: EditUserForm) => void
 }
 
-export interface resetPasswordFormProps {
-  formTitle: string;
-  defaultValues: ResetPasswordForm;
-  submitButtonLabel: string;
-  submittingButtonLabel: string;
-  isSubmitting: boolean;
-  isEditUser:boolean,
-  isResetpassword:boolean,
-  onSubmit: (data: UserCreate) => void
+export interface PanigationProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (newPage: number) => void
 }

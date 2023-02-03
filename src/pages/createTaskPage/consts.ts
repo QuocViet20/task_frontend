@@ -1,4 +1,4 @@
-export const TASK_FORM_TITLE = " Create task";
+export const TASK_FORM_TITLE = "Create_task";
 
 export const SUBMIT_BUTTON_LABEL = "Create Task";
 

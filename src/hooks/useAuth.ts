@@ -10,6 +10,7 @@ const useAuth = () => {
     "email", 
     "accessToken", 
     "role",
+    "userId",
   ])
 
   const authData = {
@@ -17,30 +18,36 @@ const useAuth = () => {
     email: cookies.email,
     accessToken: cookies.accessToken,
     role: cookies.role,
+    userId: cookies.userId
   };
   
   const isLoggedIn = 
   !_.isNil(authData.username) &&
   !_.isNil(authData.email) &&
-  !_.isNil(authData.accessToken)
+  !_.isNil(authData.accessToken) &&
+  !_.isNil(authData.userId)
 
   const isLoggedAdmin =
   !_.isNil(authData.username) &&
   !_.isNil(authData.email) &&
   !_.isNil(authData.accessToken) &&
-  !_.isNil(authData.role) 
+  !_.isNil(authData.userId) &&
+  authData.role ==="Admin"
 
   const setAuth = (data: AuthData) => {
     setCookie("username", data.username);
     setCookie("email", data.email);
     setCookie("accessToken", data.accessToken);
     setCookie("role", data.role);
+    setCookie("userId", data.userId);
   }
 
   const clearAuth = () => {
     removeCookie("username");
     removeCookie("email");
     removeCookie("accessToken");
+    removeCookie("role");
+    removeCookie("userId");
   }
   
   return {
