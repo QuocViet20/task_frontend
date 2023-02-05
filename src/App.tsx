@@ -1,5 +1,4 @@
 import React from 'react';
-import Header from './components/layout/Header';
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/homPage/HomePage';
 import Login from './pages/loginPage/Login';
@@ -12,22 +11,112 @@ import UserInformation from './pages/userInfomationPage/UserInfomationPage';
 import EditUserPage from './pages/editUser/EditUser';
 import ResetPasswordPage from './pages/resetPasswordPage/ResetPasswordPage';
 import TaskListPage from './pages/tasksListPage/TaskListPgae';
+import HomePage from './pages/homPage/HomePage';
+import NotFoundPage from './pages/notFoundPage/NotFoundPage';
+import PageLayout from './components/layout/pageLayout/PageLayout';
+import { Navigate } from 'react-router-dom';
+
+// type
+import { RoutePath } from './types';
+import useAuth from './hooks/useAuth';
+import MyTaskPage from './pages/myTask/MyTask';
 
 
 function App() {
+  const { isLoggedIn, authData, isLoggedAdmin } = useAuth();
+
+  const publicPages = [
+    {
+      path: `${RoutePath.Home}`,
+      element: <HomePage />,
+    },
+    {
+      path: "*",
+      element: <NotFoundPage />,
+    },
+    {
+      path: `${RoutePath.Register}`,
+      element: <Register />,
+    },
+  ];
+
+  const authPages = [
+    {
+      path: `${RoutePath.Login}`,
+      element: <Login />,
+    },
+  ];
+
+  const protectedPages = [
+    {
+      path: `${RoutePath.TaskList}`,
+      element: <TaskListPage />,
+    },
+    {
+      path: `${RoutePath.UserList}`,
+      element: <UserListPage />,
+    },
+    {
+      path: `${RoutePath.CreateTask}`,
+      element: <CreateTaskPage />,
+    },
+    {
+      path: `${RoutePath.CreateUser}`,
+      element: <CreateUser />,
+    },
+    {
+      path: `${RoutePath.EditTask}`,
+      element: <EditTaskPage />,
+    },
+    {
+      path: `${RoutePath.EditUser}`,
+      element: <EditUserPage />,
+    },
+    {
+      path: `${RoutePath.InfomationUser}`,
+      element: <UserInformation />,
+    },
+    {
+      path: `${RoutePath.ResetPasswordUser}`,
+      element: <ResetPasswordPage />,
+    },
+    {
+      path: `${RoutePath.MyTasks}`,
+      element: <MyTaskPage />,
+    },
+  ];
+
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/createUser" element={<CreateUser />} />
-      <Route path="/createTask" element={<CreateTaskPage />} />
-      <Route path="/tasks/:taskId/edit" element={<EditTaskPage />} />
-      <Route path="/users" element={<UserListPage />} />
-      <Route path="/users/:userId" element={<UserInformation />} />
-      <Route path="/users/:userId/edit" element={<EditUserPage />} />
-      <Route path="/users/:userId/resetPassword" element={<ResetPasswordPage />} />
-      <Route path="/tasks" element={<TaskListPage />} />
+      {publicPages.map((publicPage) => (
+        <Route
+          key={publicPage.path}
+          path={publicPage.path}
+          element={<PageLayout>{publicPage.element}</PageLayout>}
+        />
+      ))}
+      {authPages.map((authPage) => (
+        <Route
+          key={authPage.path}
+          path={authPage.path}
+          element={
+            (isLoggedAdmin || isLoggedIn) ? <Navigate to={RoutePath.Home} /> : authPage.element
+          }
+        />
+      ))}
+      {protectedPages.map((protectedPage) => (
+        <Route
+          key={protectedPage.path}
+          path={protectedPage.path}
+          element={
+            isLoggedIn && authData.role ? (
+              <PageLayout>{protectedPage.element}</PageLayout>
+            ) : (
+              <Navigate to={RoutePath.Login} />
+            )
+          }
+        />
+      ))}
     </Routes>
   );
 }

@@ -1,5 +1,13 @@
-import { number } from "yup";
-import { EditUserForm, ITaskFormData, Option, ResetPasswordForm, UserCreate } from "./data";
+import { ReactNode } from "react";
+
+import {
+  EditUserForm,
+  ITaskFormData,
+  Option,
+  ResetPasswordForm,
+  Task,
+  UserCreate,
+} from "./data";
 
 export interface TaskFormProps {
   formTitle: string;
@@ -8,7 +16,7 @@ export interface TaskFormProps {
   submitButtonLabel: string;
   submittingButtonLabel: string;
   isSubmitting: boolean;
-  onSubmit: (data: ITaskFormData) => void
+  onSubmit: (data: ITaskFormData) => void;
 }
 
 export interface UserEditFormProps {
@@ -16,11 +24,20 @@ export interface UserEditFormProps {
   submitButtonLabel: string;
   submittingButtonLabel: string;
   isSubmitting: boolean;
-  onSubmit: (data: EditUserForm) => void
+  onSubmit: (data: EditUserForm) => void;
 }
 
 export interface PanigationProps {
   currentPage: number;
   totalPages: number;
-  onPageChange: (newPage: number) => void
+  onPageChange: (newPage: number) => void;
+}
+
+export interface TaskListComponentProps {
+  tasks: Task[];
+  handleDeleteTask: (id: number) => void;
+}
+
+export interface PageLayoutProps {
+  children?: ReactNode;
 }

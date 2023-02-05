@@ -3,7 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { Card, Form, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import _ from "lodash"
 
 // type 
@@ -18,15 +18,15 @@ import userEvent from "@testing-library/user-event";
 import Loading from "../../components/elements/loading/Loading";
 
 const ResetPasswordPage = () => {
-  const [ matchPasswordError, setMatchPasswordError] = useState(false)
+  const [matchPasswordError, setMatchPasswordError] = useState(false)
   const { authData } = useAuth();
   const navigate = useNavigate();
 
-  const { 
+  const {
     register,
     handleSubmit,
     watch,
-    formState:{errors}
+    formState: { errors }
   } = useForm<ResetPasswordForm>()
 
   const resetPasswordMutation = useMutation({
@@ -34,12 +34,12 @@ const ResetPasswordPage = () => {
       return updateUser(authData.userId as string, body)
     },
     onError: () => {
-      toast.error("Reset password failded",{
+      toast.error("Reset password failded", {
         position: toast.POSITION.TOP_RIGHT
       })
     },
     onSuccess: () => {
-      toast.success("Reset password successfully",{
+      toast.success("Reset password successfully", {
         position: toast.POSITION.TOP_RIGHT
       });
       navigate("/login")
@@ -55,36 +55,36 @@ const ResetPasswordPage = () => {
     queryFn: async () => await getUserId(authData.userId as string),
     enabled: !_.isNil(authData.userId)
   })
-  
+
   console.log(userResponse?.data)
-  const onSubmit:SubmitHandler<ResetPasswordForm> = (data: any) => {
-    if(data.password !== userResponse?.data.password){
+  const onSubmit: SubmitHandler<ResetPasswordForm> = (data: any) => {
+    if (data.password !== userResponse?.data.password) {
       setMatchPasswordError(true)
-    }else{
+    } else {
       setMatchPasswordError(false)
+      const updateUser: UserCreate = {
+        email: authData.email,
+        password: data.newPassword,
+        role: authData.role,
+        accessToken: authData.accessToken,
+        username: authData.username,
+      }
+      resetPasswordMutation.mutate(updateUser)
     }
-    const updateUser: UserCreate = {
-      email: authData.email,
-      password: data.newPassword,
-      role: authData.role,
-      accessToken: authData.accessToken,
-      username: authData.username,
-    }
-    resetPasswordMutation.mutate(updateUser)
   }
 
-  if(isGetUserError){
+  if (isGetUserError) {
     return <h1 className="container text-center text-danger"></h1>
   }
-  if(isGetUserLoading) {
-    return <Loading/>
+  if (isGetUserLoading) {
+    return <Loading />
   }
 
   return (
     <div className="container d-flex justify-content-center marginTop">
       <Card className="card_container">
         <h3 className="text-center text-success font-italic">Reset Password</h3>
-        <Form  onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <Form.Group className="mt-2">
             <Form.Label
               className="font-weight-bold mx-1 label_text">
@@ -107,7 +107,7 @@ const ResetPasswordPage = () => {
             {errors.password?.type === "minLength" && (
               <span className="mt-1 text-danger">Mật khẩu ít nhất 6 ký tự</span>
             )}
-            {matchPasswordError && (
+            {watch('password') !== userResponse?.data.password && matchPasswordError && errors.password?.type !== "minLength" && (
               <span className="mt-1 text-danger">Mật khẩu không đúng</span>
             )}
           </Form.Group>
@@ -149,28 +149,28 @@ const ResetPasswordPage = () => {
               })}
             />
             {errors.confirmPassword?.type === "required" && (
+              <span className="mt-1 text-danger">
+                Hãy nhập mật khẩu xác nhận của bạn
+              </span>
+            )}
+            {errors.confirmPassword?.type === "minLength" && (
+              <span className="mt-1 text-danger">Mật khẩu ít nhất 6 ký tự</span>
+            )}
+            {watch("confirmPassword") &&
+              watch("newPassword") !== watch("confirmPassword") &&
+              !errors.confirmPassword?.type && (
                 <span className="mt-1 text-danger">
-                  Hãy nhập mật khẩu xác nhận của bạn
+                  Mật khẩu xác nhận không đúng
                 </span>
               )}
-              {errors.confirmPassword?.type === "minLength" && (
-                <span className="mt-1 text-danger">Mật khẩu ít nhất 6 ký tự</span>
-              )}
-              {watch("confirmPassword") &&
-                watch("newPassword") !== watch("confirmPassword") &&
-                !errors.confirmPassword?.type && (
-                  <span className="mt-1 text-danger">
-                    Mật khẩu xác nhận không đúng
-                  </span>
-                )}
-            </Form.Group>
+          </Form.Group>
           <div className=" d-flex justify-content-between">
             <Button className="mt-3" type="submit">
-            Reset
+              Reset
             </Button>
-            
-            <Link to={"/"} className =" btn btn-warning mt-3 mx-2"> Back</Link>
-            
+
+            <Link to={"/"} className=" btn btn-warning mt-3 mx-2"> Back</Link>
+
           </div>
         </Form>
       </Card>

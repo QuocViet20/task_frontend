@@ -14,7 +14,7 @@ import { UserLogin } from "../../types";
 import { apiClient } from "../../api/serviceApi";
 
 // hooks
-import useAuth  from '../../hooks/useAuth'
+import useAuth from '../../hooks/useAuth'
 
 const Login: React.FC = memo(() => {
   const { setAuth, authData } = useAuth();
@@ -42,12 +42,12 @@ const Login: React.FC = memo(() => {
   //     });
   //   }
   // })
- 
+
   const onsubmit: SubmitHandler<UserLogin> = async (data: any) => {
     const response = await apiClient.get((`/users?email=${data.email}&password=${data.password}`));
     console.log(response.data.length)
-    if(response.data.length === 0){
-      toast.error('login error',{
+    if (response.data.length === 0) {
+      toast.error('login error', {
         position: toast.POSITION.TOP_RIGHT,
       })
     }
@@ -56,12 +56,12 @@ const Login: React.FC = memo(() => {
       username: response.data[0].username,
       email: response.data[0].email,
       role: response.data[0].role,
-      userId:response.data[0].id,
+      userId: response.data[0].id,
     });
     console.log(authData)
     navigate("/")
-    toast.success("login success",{
-      position:toast.POSITION.TOP_RIGHT
+    toast.success("login success", {
+      position: toast.POSITION.TOP_RIGHT
     })
   }
 
@@ -89,9 +89,9 @@ const Login: React.FC = memo(() => {
                 Hãy nhập email của bạn
               </span>
             )}
-             {errors.email?.type === "pattern" && (
-                <span className="mt-1 text-danger">Đây phải là Email</span>
-              )}
+            {errors.email?.type === "pattern" && (
+              <span className="mt-1 text-danger">Đây phải là Email</span>
+            )}
           </FormGroup>
           <FormGroup className="mt-2">
             <Form.Label

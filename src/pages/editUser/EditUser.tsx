@@ -8,7 +8,7 @@ import _ from "lodash";
 import Loading from "../../components/elements/loading/Loading";
 
 //types
-import {  Role, EditUserForm, UserCreate } from "../../types";
+import { EditUserForm, UserCreate } from "../../types";
 import { DEFAULT_EDITUSER_DATA, SUBMIT_BUTTON_LABEL, SUBMITTING_BUTTON_LABEL } from "./consts";
 
 // api
@@ -17,7 +17,7 @@ import EditUserFormComponent from "../../components/elements/editUserForm/EditUs
 
 const EditUserPage = () => {
   const { userId } = useParams();
-
+  console.log(userId)
   const {
     data: userResponse,
     isLoading: isGetUserLoading,
@@ -27,25 +27,25 @@ const EditUserPage = () => {
     queryFn: () => getUserId(userId as string),
     enabled: !_.isNil(userId)
   })
-  
+
   const defaultValues = useMemo(() => {
-    if(_.isNil(userResponse)) {
+    if (_.isNil(userResponse)) {
       return DEFAULT_EDITUSER_DATA
     }
     const { email, username, role } = userResponse.data;
     return { email, username, role }
-  },[userResponse]);
+  }, [userResponse]);
 
   const user = useMemo(() => {
-    if(_.isNil(userResponse)) {
+    if (_.isNil(userResponse)) {
       return DEFAULT_EDITUSER_DATA
     }
     const { email, username, role, password, accessToken } = userResponse.data;
     return { email, username, role, password, accessToken }
-  },[userResponse])
-  
+  }, [userResponse])
+
   const editUserMutation = useMutation({
-    mutationFn: ( body: UserCreate) => {
+    mutationFn: (body: UserCreate) => {
       return updateUser(userId as string, body)
     },
     onError: () => {
@@ -71,11 +71,11 @@ const EditUserPage = () => {
     editUserMutation.mutate(updatedUser);
 
   }
-  
-  if (isGetUserError) 
-    return  <h1 className="container text-danger text-center mt-4">Not found data</h1>
-  
-    if (isGetUserLoading){
+
+  if (isGetUserError)
+    return <h1 className="container text-danger text-center mt-4">Not found data</h1>
+
+  if (isGetUserLoading) {
     return <Loading />
   }
 

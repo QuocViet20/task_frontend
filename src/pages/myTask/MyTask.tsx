@@ -1,33 +1,28 @@
-// library
-import { useState, useMemo, useEffect } from "react"
-import { useMutation, useQuery } from "@tanstack/react-query";
+
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { memo, useMemo, useState } from "react"
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import _ from "lodash"
-import {
-  Button,
-  Form,
-  Modal,
-  Table
-} from "react-bootstrap"
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Form } from "react-bootstrap";
 import { toast } from "react-toastify";
-import moment from "moment";
 
 //components
 import Loading from "../../components/elements/loading/Loading";
 import PaginationComponent from "../../components/elements/panigation/Pagination";
 
-//type
-import { Option, Task, User } from "../../types";
-import { RECORDS_PER_PAGE, STATUS_DATA } from "./consts";
+//types
+import { RECORDS_PER_PAGE, STATUS_DATA } from "../../consts";
 
-// api
-import { deleteTask, getTasks, getAssignee } from "../../api/serviceApi";
+//api
+import { getTaskAssignee, getUserId, deleteTask } from "../../api/serviceApi";
 
-//hooks
+// hooks
 import useDebounce from "../../hooks/useSearch";
 import TaskListComponent from "../../components/elements/taskListComponent/TaskListComponent";
 
-const TaskListPage = () => {
+
+const MyTaskPage = memo(() => {
+  const { userId } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState("");
@@ -41,23 +36,27 @@ const TaskListPage = () => {
       currentPage,
       limit: RECORDS_PER_PAGE,
       debouncedSearchHook,
-      selectedStatus
+      selectedStatus,
+      assignee: userId as string
     }
     : {
       currentPage,
       limit: RECORDS_PER_PAGE,
-      debouncedSearchHook
+      debouncedSearchHook,
+      assignee: userId as string
     }
 
-  const { data, isLoading, refetch }: any = useQuery({
+  const { data, isLoading, refetch, isError }: any = useQuery({
     queryKey: [
       "tasks",
       queryParams.currentPage,
       queryParams.debouncedSearchHook,
-      queryParams.selectedStatus
+      queryParams.selectedStatus,
+      queryParams.assignee
     ],
-    queryFn: () => getTasks(queryParams)
+    queryFn: () => getTaskAssignee(queryParams)
   })
+
 
   const totalPages = useMemo(() => {
     if (_.isNil(data) || _.isNil(data.headers["x-total-count"])) {
@@ -82,25 +81,23 @@ const TaskListPage = () => {
   }
 
   const onPageChange = (pageNumber: number) => {
-    navigate(`/tasks?page=${pageNumber}`)
+    navigate(`/users/${userId}/myTasks?assignee=${userId}&page=${pageNumber}`)
   }
-
-  const { data: assigneeResponse, isLoading: isAssigneeLoading, } = useQuery({
-    queryKey: ["assigneeTask"],
-    queryFn: () => getAssignee(),
-  })
 
   if (isLoading) {
     return <Loading />
   }
-
-  if (isAssigneeLoading) {
-    return <Loading />
+  if (isError) {
+    return (
+      <div className="container text-center mt-4">
+        <h2 className="text-danger">Not found task</h2>
+      </div>
+    )
   }
-
   return (
-    <div className="container">
+    <div className="container mt-4">
       <div className="mt-4">
+        <h2 className="text-center text-danger"> My tasks list</h2>
         <div className=" d-flex">
           <div className="d-flex border align-items-center w-25 rounded" >
             <Form.Control className="border-0 position-relative "
@@ -125,12 +122,8 @@ const TaskListPage = () => {
               ))}
             </Form.Select>
           </div>
-          <Link to={'/tasks/create'} className="mx-4">
-            <Button className="btn btn-primary">Add task</Button>
-          </Link>
         </div>
       </div>
-      <h2 className="text-center text-danger">Tasks list</h2>
       <TaskListComponent
         tasks={data.data}
         handleDeleteTask={handleDelete}
@@ -142,9 +135,10 @@ const TaskListPage = () => {
           onPageChange={onPageChange}
         />
       </div>
-
     </div>
-  )
-}
 
-export default TaskListPage
+
+  )
+})
+
+export default MyTaskPage

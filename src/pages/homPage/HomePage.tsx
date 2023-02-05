@@ -1,14 +1,10 @@
-import React from "react";
 
-import Header from "../../components/layout/Header";
-
-const Home: React.FC = () => {
+const HomePage = () => {
   return (
-    <div>
-      <Header />
-
+    <div className="container">
+      <h1 className="text-center text-primary text-uppercase mt-4">Trang chủ công ty</h1>
     </div>
   );
 };
 
-export default Home;
+export default HomePage;

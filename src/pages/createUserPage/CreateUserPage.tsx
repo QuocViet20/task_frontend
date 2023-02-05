@@ -22,8 +22,8 @@ const CreateUser: React.FC = memo(() => {
     watch,
     formState: { errors },
   } = useForm<IFormUserCreateAccount>();
-  
-  const onSubmit:SubmitHandler<IFormUserCreateAccount> = (data:any) => {
+
+  const onSubmit: SubmitHandler<IFormUserCreateAccount> = (data: any) => {
     const newUser: UserCreate = {
       email: data.email,
       username: data.username,
@@ -32,7 +32,7 @@ const CreateUser: React.FC = memo(() => {
       role: data.role,
     }
     mutate(newUser, {
-      onSuccess: () => {},
+      onSuccess: () => { },
       onError: () => { }
     })
   }
@@ -42,7 +42,7 @@ const CreateUser: React.FC = memo(() => {
       return createUser(body)
     },
     onError: () => {
-      toast.error(" create account error",{
+      toast.error(" create account error", {
         position: toast.POSITION.TOP_RIGHT
       })
     },
@@ -50,7 +50,6 @@ const CreateUser: React.FC = memo(() => {
       toast.success("Account created successfully", {
         position: toast.POSITION.TOP_RIGHT
       })
-      navigate("/")
     }
   })
 
@@ -79,8 +78,8 @@ const CreateUser: React.FC = memo(() => {
               </span>
             )}
             {errors.email?.type === "pattern" && (
-                <span className="mt-1 text-danger">Đây phải là Email</span>
-              )}
+              <span className="mt-1 text-danger">Đây phải là Email</span>
+            )}
           </Form.Group>
           <Form.Group className="mt-2">
             <Form.Label
@@ -101,13 +100,13 @@ const CreateUser: React.FC = memo(() => {
               </span>
             )}
             {errors.email?.type === "pattern" && (
-                <span className="mt-1 text-danger">Đây phải là Email</span>
-              )}
-              {errors.username?.type === "maxLength" && (
-                <span className="mt-1 text-danger">
-                  Tên tài khoản tối đa 16 ký tự
-                </span>
-              )}
+              <span className="mt-1 text-danger">Đây phải là Email</span>
+            )}
+            {errors.username?.type === "maxLength" && (
+              <span className="mt-1 text-danger">
+                Tên tài khoản tối đa 16 ký tự
+              </span>
+            )}
           </Form.Group>
           <Form.Group className="mt-2">
             <Form.Label
@@ -116,9 +115,9 @@ const CreateUser: React.FC = memo(() => {
             </Form.Label>
             <Form.Select
               {...register("role", {
-                
+
               })}
-            > 
+            >
               <option value={Role.User}>{Role.User}</option>
               <option value={Role.Admin}>{Role.Admin}</option>
             </Form.Select>
@@ -161,28 +160,28 @@ const CreateUser: React.FC = memo(() => {
               })}
             />
             {errors.confirmPassword?.type === "required" && (
+              <span className="mt-1 text-danger">
+                Hãy nhập mật khẩu xác nhận của bạn
+              </span>
+            )}
+            {errors.confirmPassword?.type === "minLength" && (
+              <span className="mt-1 text-danger">Mật khẩu ít nhất 6 ký tự</span>
+            )}
+            {watch("confirmPassword") &&
+              watch("password") !== watch("confirmPassword") &&
+              !errors.confirmPassword?.type && (
                 <span className="mt-1 text-danger">
-                  Hãy nhập mật khẩu xác nhận của bạn
+                  Mật khẩu xác nhận không đúng
                 </span>
               )}
-              {errors.confirmPassword?.type === "minLength" && (
-                <span className="mt-1 text-danger">Mật khẩu ít nhất 6 ký tự</span>
-              )}
-              {watch("confirmPassword") &&
-                watch("password") !== watch("confirmPassword") &&
-                !errors.confirmPassword?.type && (
-                  <span className="mt-1 text-danger">
-                    Mật khẩu xác nhận không đúng
-                  </span>
-                )}
           </Form.Group>
           <div className=" d-flex justify-content-between">
             <Button className="mt-3" type="submit">
-            Create
+              Create
             </Button>
-            
-            <Link to={"/"} className =" btn btn-warning mt-3 mx-2"> Back</Link>
-            
+
+            <Link to={"/"} className=" btn btn-warning mt-3 mx-2"> Back</Link>
+
           </div>
         </Form>
       </Card>
