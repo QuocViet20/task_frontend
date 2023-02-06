@@ -1,23 +1,27 @@
 import axios from "axios";
 import { UserCreate, User, UserLogin, ITaskFormData, Task } from "../types";
+import { API_URL } from "./consts";
 
 export const apiClient = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: API_URL,
   headers: {
     "Content-type": "application/json",
   },
 });
 
-export const createUser = (user: UserCreate) => 
-  apiClient.post("/users", user);
+export const createUser = (user: UserCreate) => {
+  return apiClient.post("/users", user);
+}
 
 export const getAssignee = () => apiClient.get("/users?role=User")
 
-export const addTask = (task: ITaskFormData) =>
-  apiClient.post("/tasks", task)
+export const addTask = (task: ITaskFormData) => {
+  return apiClient.post("/tasks", task)
+}
 
-export const updateTask = (taskId: string, task: ITaskFormData) => 
-  apiClient.put<ITaskFormData>(`/tasks/${taskId}`, task)
+export const updateTask = (taskId: string, task: ITaskFormData) => {
+  return apiClient.put<ITaskFormData>(`/tasks/${taskId}`, task)
+}
 
 export const getTask = ( taskId: string) => apiClient.get<Task>(`/tasks/${taskId}`)
 
@@ -26,22 +30,16 @@ export const getTasks = (
   | {
     currentPage: number;
     limit: number;
-    debouncedSearchHook: string;
-    selectedStatus: string;
+    searchText: string;
+    status: string | undefined;
   }
-  | {
-    currentPage: number;
-    limit: number;
-    debouncedSearchHook: string;
-    selectedStatus?: undefined;
-  },
 ) => {
   return apiClient.get<Task>(`/tasks`, {
     params: {
       _page: params.currentPage,
       _limit: params.limit,
-      q: params.debouncedSearchHook,
-      status: params.selectedStatus,
+      q: params.searchText,
+      status: params.status,
     }
   })
 }
@@ -51,24 +49,17 @@ export const getTaskAssignee = (
   | {
     currentPage: number;
     limit: number;
-    debouncedSearchHook: string;
-    selectedStatus: string;
+    searchText: string;
+    status: string | undefined;
     assignee: string
   }
-  | {
-    currentPage: number;
-    limit: number;
-    debouncedSearchHook: string;
-    assignee: string;
-    selectedStatus?: undefined;
-  },
 ) => {
   return apiClient.get<Task>(`/tasks`, {
     params: {
       _page: params.currentPage,
       _limit: params.limit,
-      q: params.debouncedSearchHook,
-      status: params.selectedStatus,
+      q: params.searchText,
+      status: params.status,
       assignee: params.assignee,
     }
   })
@@ -79,31 +70,30 @@ export const getUsers = (
   | {
     currentPage: number;
     limit: number;
-    debouncedSearchHook: string;
+    searchText: string;
   }
-  | {
-    currentPage: number;
-    limit: number;
-    debouncedSearchHook: string;
-  },
 ) => {
   return apiClient.get<User>(`/Users?role=User`, {
     params: {
       _page: params.currentPage,
       _limit: params.limit,
-      q: params.debouncedSearchHook,
+      q: params.searchText,
     }
   })
 }
 
-export const getUserId = (userId: string) =>
-  apiClient.get<UserCreate>(`/users/${userId}`)
+export const getUserId = (userId: string) => {
+  return apiClient.get<UserCreate>(`/users/${userId}`)
+}
 
-export const deleteTask = (id: number) =>
-  apiClient.delete(`/tasks/${id}`)
+export const deleteTask = (id: number) => {
+  return apiClient.delete(`/tasks/${id}`)
+}
 
-export const deleteUser = (id: number) =>
-  apiClient.delete(`/users/${id}`)
+export const deleteUser = (id: number) => {
+  return apiClient.delete(`/users/${id}`)
+}
 
-export const updateUser = ( userId: string, user: UserCreate) =>
-  apiClient.put<UserCreate>(`/users/${userId}`, user)
+export const updateUser = ( userId: string, user: UserCreate) => {
+  return apiClient.put<UserCreate>(`/users/${userId}`, user)
+}

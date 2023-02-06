@@ -11,6 +11,7 @@ export enum Role {
 }
 
 export enum RoutePath {
+  NotFound = "*",
   Home = "/",
   Login = "/login",
   Register = "/register",

@@ -1,10 +1,12 @@
 
 .nav-link:visited {
   color: rgb(231, 215, 215);
-  font-weight: 100;
-
 }
 
-.nav-link:link {
-  color: rgb(53, 50, 50)
+
+.text_username {
+  color: aquamarine;
+}
+.nav-link {
+  color:rgb(194, 197, 12)
 }

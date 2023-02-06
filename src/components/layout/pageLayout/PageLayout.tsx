@@ -45,7 +45,7 @@ const PageLayout = ({ children }: PageLayoutProps) => {
             navbarScroll
           >
             {isLoggedIn ? (
-              <NavDropdown title={authData.username} id="navbarScrollingDropdown">
+              <NavDropdown title={authData.username} id="navbarScrollingDropdown" className='text_username'>
                 <NavDropdown.Item as={NavLink} to={`/user/${authData.userId}/myInformation`}>Personal Infomation</NavDropdown.Item>
                 <NavDropdown.Item as={NavLink} to={RoutePath.ResetPasswordUser}>
                   Reset Password
