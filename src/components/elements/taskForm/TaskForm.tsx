@@ -37,6 +37,7 @@ const TaskForm = memo(
       register,
       reset,
       handleSubmit,
+      watch,
       formState: { errors },
     } = useForm<ITaskFormData>({
       resolver: yupResolver(schema),
@@ -81,7 +82,8 @@ const TaskForm = memo(
                     <Form.Select
                       {...register("assignee")}
                     >
-                      <option value="">Assignee</option>
+                     <option value="">Assignee</option>
+                     <option value="Admin">Admin</option>
                       {assigneOptions.map((assignee) => (
                         <option value={assignee.value}>{assignee.label}</option>
                       ))}

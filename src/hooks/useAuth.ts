@@ -48,6 +48,7 @@ const useAuth = () => {
     removeCookie("accessToken");
     removeCookie("role");
     removeCookie("userId");
+    authData.userId ="";
   }
   
   return {

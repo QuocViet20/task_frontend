@@ -35,6 +35,7 @@ export interface PanigationProps {
 
 export interface TaskListComponentProps {
   tasks: Task[];
+  assigneeOptions: Option[]
   handleDeleteTask: (id: number) => void;
 }
 

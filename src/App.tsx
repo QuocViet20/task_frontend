@@ -20,6 +20,8 @@ import { Navigate } from 'react-router-dom';
 import { RoutePath } from './types';
 import useAuth from './hooks/useAuth';
 import MyTaskPage from './pages/myTask/MyTask';
+import CreateTaskAdminPage from './pages/createTaskAdmin/CreateTaskAdmin';
+import MyInformation from './pages/myInfomation/MyInformation';
 
 
 function App() {
@@ -61,6 +63,10 @@ function App() {
       element: <CreateTaskPage />,
     },
     {
+      path: `${RoutePath.CreateTaskAdmin}`,
+      element: <CreateTaskAdminPage />,
+    },
+    {
       path: `${RoutePath.CreateUser}`,
       element: <CreateUser />,
     },
@@ -83,6 +89,10 @@ function App() {
     {
       path: `${RoutePath.MyTasks}`,
       element: <MyTaskPage />,
+    },
+    {
+      path: `${RoutePath.MyInfomation}`,
+      element: <MyInformation />,
     },
   ];
 

@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import _ from "lodash"
-import { memo, useMemo } from "react";
+import { memo, useMemo, useState } from "react";
 
 import { toast } from "react-toastify";
 import { useParams, useNavigate} from "react-router-dom";
@@ -21,11 +21,12 @@ import {
 
 // service_api
 import { getAssignee, updateTask, getTask } from "../../api/serviceApi";
+import useAuth from "../../hooks/useAuth";
 
 const EditTaskPage = memo(() => {
-  const { taskId } = useParams()
-  const navigate = useNavigate();
-  console.log(taskId)
+  const { taskId } = useParams();
+  const [ isSelectedAdmin, setIsSelectedAdmin] = useState<boolean>(true)
+  const { authData } = useAuth();
 
   const {
     data: taskResponse,
@@ -51,13 +52,7 @@ const EditTaskPage = memo(() => {
     }))
   },[assigneeResponse])
 
-  const defaultValues = useMemo( () => {
-    if(_.isNil(taskResponse)) {
-      return DEFAULT_TASK_FORM_DATA
-    }
-    const { title, assignee, startTime, endTime, status, progress}  = taskResponse.data;
-    return { title, assignee, startTime, endTime, status, progress} 
-  },[taskResponse])
+ 
  
 
   const editTaskMutation = useMutation({
@@ -92,17 +87,27 @@ const EditTaskPage = memo(() => {
 
   if (isTaskError) 
   return  <h1 className="container text-danger text-center mt-4">Not found data</h1>
+
   if (isTaskLoading){
     return <Loading />
   }
 
-   
+  const defaultValues =  () => {
+    if(_.isNil(taskResponse)) {
+      return DEFAULT_TASK_FORM_DATA
+    }
+    const { title, assignee, startTime, endTime, status, progress}  = taskResponse.data;
+    if( authData.role === "Admin" && assignee === authData.userId){
+      return { title, assignee: "Admin", startTime, endTime, status, progress} 
+    }
+    return { title, assignee, startTime, endTime, status, progress} 
+  }
 
   return (
     <TaskForm 
       formTitle={TASK_FORM_TITLE}
       assigneOptions={assigneOptions}
-      defaultValues={defaultValues}
+      defaultValues={defaultValues()}
       submitButtonLabel={SUBMIT_BUTTON_LABEL}
       submittingButtonLabel={SUBMITTING_BUTTON_LABEL}
       isSubmitting={editTaskMutation.isLoading} 

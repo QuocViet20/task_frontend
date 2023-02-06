@@ -1,14 +1,14 @@
 // library
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import _ from "lodash";
-import { memo, useMemo, useState } from "react";
+import { memo } from "react";
 import { toast } from "react-toastify";
 
 // types
-import { ITaskFormData, User } from "../../types";
+import { ITaskFormData} from "../../types";
 
 // service_api 
-import { addTask, getAssignee } from "../../api/serviceApi";
+import { addTask,} from "../../api/serviceApi";
 
 // consts
 import { DEFAULT_TASK_FORM_DATA } from "../../consts";
@@ -21,22 +21,11 @@ import {
 // components
 import TaskForm from "../../components/elements/taskForm/TaskForm";
 
-const CreateTaskPage = memo(() => {
+// hooks
+import useAuth from "../../hooks/useAuth";
 
-  const { data: assigneeResponse } = useQuery({
-    queryKey: ["assigneeTask"],
-    queryFn: () => getAssignee(),
-  })
-
-  const assigneOptions = useMemo(() => {
-    if (_.isNil(assigneeResponse)) {
-      return [];
-    }
-    return assigneeResponse.data.map((assignee: User) => ({
-      label: assignee.username,
-      value: assignee.id,
-    }))
-  }, [assigneeResponse])
+const CreateTaskAdminPage = memo(() => {
+  const { authData } = useAuth()
 
   const createTaskMutation = useMutation({
     mutationFn: (body: ITaskFormData) => {
@@ -56,14 +45,18 @@ const CreateTaskPage = memo(() => {
   })
 
   const onSubmit = (data: ITaskFormData) => {
+    if(data.assignee === authData.role){
+      data.assignee = authData.userId
+    }
+    console.log(authData)
+     console.log(data)
     createTaskMutation.mutate(data);
   }
-
 
   return (
     <TaskForm
       formTitle={TASK_FORM_TITLE}
-      assigneOptions={assigneOptions}
+      assigneOptions={[]}
       defaultValues={DEFAULT_TASK_FORM_DATA}
       submitButtonLabel={SUBMIT_BUTTON_LABEL}
       submittingButtonLabel={SUBMITTING_BUTTON_LABEL}
@@ -74,4 +67,4 @@ const CreateTaskPage = memo(() => {
 
 })
 
-export default CreateTaskPage
+export default CreateTaskAdminPage

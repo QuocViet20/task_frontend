@@ -147,6 +147,7 @@ const UserInformation = memo(() => {
         </div>
       </div>
       <TaskListComponent
+      assigneeOptions={[]}
         tasks={data.data}
         handleDeleteTask={handleDelete}
       />

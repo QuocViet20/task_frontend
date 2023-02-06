@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import {
   Button,
@@ -6,16 +7,21 @@ import {
   Table
 } from "react-bootstrap";
 import moment from "moment";
-import { Task, TaskListComponentProps } from "../../../types";
+import { Task, TaskListComponentProps, Option } from "../../../types";
 
 // hooks
 import useAuth from "../../../hooks/useAuth";
 
 const TaskListComponent = ({
-  tasks, handleDeleteTask
+  tasks, 
+  handleDeleteTask,
+  assigneeOptions,
 }: TaskListComponentProps) => {
   const [show, setShow] = useState(false);
   const { authData } = useAuth()
+  console.log(assigneeOptions)
+
+
 
   return (
     <div className="mt-4">
@@ -26,7 +32,7 @@ const TaskListComponent = ({
               <tr className="text-center">
                 <th>NO</th>
                 <th>Title</th>
-                <th>Assignee</th>
+                {assigneeOptions.length>0 && <th>Assignee</th> }
                 <th>Start time</th>
                 <th>End time</th>
                 <th>Progress</th>
@@ -40,7 +46,7 @@ const TaskListComponent = ({
                 <tr key={task.id} className="text-center">
                   <td>{index + 1}</td>
                   <td>{task.title}</td>
-                  <td>{task.assignee}</td>
+                  {assigneeOptions.length > 0 ? <td>{assigneeOptions.filter((option: Option) => option.value == task.assignee )[0].label}</td> :""}
                   <td>{moment(task.startTime).format('DD/MM /YYYY HH:mm A')}</td>
                   <td>{moment(task.endTime).format('DD/MM /YYYY HH:mm A')}</td>
                   <td className="text-danger" >{task.progress}%</td>
@@ -79,8 +85,6 @@ const TaskListComponent = ({
               ))
               }
             </tbody>
-
-
           </Table>
         ) : (
           <h2 className="mt-4 text-center text-warning"> No Tasks</h2>

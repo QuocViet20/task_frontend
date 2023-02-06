@@ -1,9 +1,9 @@
 
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { memo, useMemo, useState } from "react"
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, Link, useSearchParams } from "react-router-dom";
 import _ from "lodash"
-import { Form } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 
 //components
@@ -14,14 +14,16 @@ import PaginationComponent from "../../components/elements/panigation/Pagination
 import { RECORDS_PER_PAGE, STATUS_DATA } from "../../consts";
 
 //api
-import { getTaskAssignee, getUserId, deleteTask } from "../../api/serviceApi";
+import { getTaskAssignee, deleteTask } from "../../api/serviceApi";
 
 // hooks
 import useDebounce from "../../hooks/useSearch";
 import TaskListComponent from "../../components/elements/taskListComponent/TaskListComponent";
+import useAuth from "../../hooks/useAuth";
 
 
 const MyTaskPage = memo(() => {
+  const { authData } = useAuth();
   const { userId } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -122,9 +124,15 @@ const MyTaskPage = memo(() => {
               ))}
             </Form.Select>
           </div>
+          {authData.role === "Admin" &&        
+          <Link to={'/tasks/create_task_Admin'} className="mx-4">
+            <Button className="btn btn-primary">Add task</Button>
+          </Link>
+          }
         </div>
       </div>
       <TaskListComponent
+      assigneeOptions={[]}
         tasks={data.data}
         handleDeleteTask={handleDelete}
       />

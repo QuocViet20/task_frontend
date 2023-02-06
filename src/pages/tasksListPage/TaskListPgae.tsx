@@ -1,16 +1,13 @@
 // library
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo } from "react"
 import { useMutation, useQuery } from "@tanstack/react-query";
 import _ from "lodash"
 import {
   Button,
-  Form,
-  Modal,
-  Table
+  Form
 } from "react-bootstrap"
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import moment from "moment";
 
 //components
 import Loading from "../../components/elements/loading/Loading";
@@ -25,9 +22,13 @@ import { deleteTask, getTasks, getAssignee } from "../../api/serviceApi";
 
 //hooks
 import useDebounce from "../../hooks/useSearch";
+import useAuth from "../../hooks/useAuth";
+
+//components
 import TaskListComponent from "../../components/elements/taskListComponent/TaskListComponent";
 
 const TaskListPage = () => {
+  const { authData } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState("");
@@ -90,6 +91,16 @@ const TaskListPage = () => {
     queryFn: () => getAssignee(),
   })
 
+  const assigneOptions = useMemo(() => {
+    if (_.isNil(assigneeResponse)) {
+      return [];
+    }
+    return assigneeResponse.data.map((assignee: User) => ({
+      label: assignee.username,
+      value: assignee.id,
+    }))
+  }, [assigneeResponse])
+
   if (isLoading) {
     return <Loading />
   }
@@ -98,6 +109,7 @@ const TaskListPage = () => {
     return <Loading />
   }
 
+  const userListTasks: Task[] = data.data.filter((task: Task) => task.assignee !== authData.userId)
   return (
     <div className="container">
       <div className="mt-4">
@@ -132,7 +144,8 @@ const TaskListPage = () => {
       </div>
       <h2 className="text-center text-danger">Tasks list</h2>
       <TaskListComponent
-        tasks={data.data}
+      assigneeOptions={assigneOptions}
+        tasks={userListTasks}
         handleDeleteTask={handleDelete}
       />
       <div>
