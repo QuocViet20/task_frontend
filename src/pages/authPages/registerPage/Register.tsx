@@ -16,7 +16,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 
 //types
-import { UserCreateAccount, UserCreate, Role }from '../../../types';
+import { IUserFormRegister, INewUser, Role } from '../../../types';
 //api_service
 import { createUser } from '../../../api/serviceApi';
 
@@ -29,11 +29,11 @@ const Register: React.FC = memo(() => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<UserCreateAccount>();
+  } = useForm<IUserFormRegister>();
 
-  const onsubmit: SubmitHandler<UserCreateAccount> = (data: any) => {
+  const onsubmit: SubmitHandler<IUserFormRegister> = (data: any) => {
     // console.log(data)
-    const newUser: UserCreate = {
+    const newUser: INewUser = {
       email: data.email,
       username: data.username,
       password: data.password,
@@ -41,13 +41,13 @@ const Register: React.FC = memo(() => {
       role: Role.Admin,
     }
     mutate(newUser, {
-      onSuccess: () => {},
+      onSuccess: () => { },
       onError: () => { }
     })
   }
 
   const { mutate } = useMutation({
-    mutationFn: (body: UserCreate) => {
+    mutationFn: (body: INewUser) => {
       return createUser(body)
     },
     onError: () => {

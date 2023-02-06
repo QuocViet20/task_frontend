@@ -43,7 +43,6 @@ const UserInformation = memo(() => {
       currentPage,
       limit: RECORDS_PER_PAGE,
       searchText: debouncedSearchHook,
-      status:"",
       assignee: userId as string
     }
 
@@ -148,7 +147,7 @@ const UserInformation = memo(() => {
         </div>
       </div>
       <TaskListComponent
-      assigneeOptions={[]}
+        assigneeOptions={[]}
         tasks={data.data}
         handleDeleteTask={handleDelete}
       />

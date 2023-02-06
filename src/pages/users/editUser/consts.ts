@@ -1,13 +1,12 @@
-import { Role, UserCreate } from "../../../types";
+import { Role, INewUser } from "../../../types";
 
-export const DEFAULT_EDITUSER_DATA: UserCreate = {
-  email:"",
+export const DEFAULT_EDITUSER_DATA: INewUser = {
+  email: "",
   username: "",
-  password:"",
-  accessToken:"",
-  role: Role.User
-}
-
+  password: "",
+  accessToken: "",
+  role: Role.User,
+};
 
 export const SUBMIT_BUTTON_LABEL = "Edit";
 

@@ -1,13 +1,6 @@
 import { ReactNode } from "react";
 
-import {
-  EditUserForm,
-  ITaskFormData,
-  Option,
-  ResetPasswordForm,
-  Task,
-  UserCreate,
-} from "./data";
+import { EditUserForm, ITaskFormData, Option, Task } from "./data";
 
 export interface TaskFormProps {
   formTitle: string;
@@ -35,7 +28,7 @@ export interface PanigationProps {
 
 export interface TaskListComponentProps {
   tasks: Task[];
-  assigneeOptions: Option[]
+  assigneeOptions: Option[];
   handleDeleteTask: (id: number) => void;
 }
 

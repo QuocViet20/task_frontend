@@ -14,7 +14,7 @@ import Loading from "../../../components/elements/loading/Loading";
 import PaginationComponent from "../../../components/elements/panigation/Pagination";
 
 //type
-import { Option, Task, User } from "../../../types";
+import { Task, User } from "../../../types";
 import { RECORDS_PER_PAGE, STATUS_DATA } from "./consts";
 
 // api
@@ -32,23 +32,22 @@ const TaskListPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState(STATUS_DATA[0].value)
+  const [status, setStatus] = useState(STATUS_DATA[0].value)
   const searchText = useDebounce(searchValue, 1000);
 
   const currentPage = Number(searchParams.get("page")) || 1;
 
-  const queryParams = selectedStatus
+  const queryParams = status
     ? {
       currentPage,
       limit: RECORDS_PER_PAGE,
       searchText,
-      status:selectedStatus
+      status: status
     }
     : {
       currentPage,
       limit: RECORDS_PER_PAGE,
       searchText,
-      status:"",
     }
 
   const { data, isLoading, refetch }: any = useQuery({
@@ -129,8 +128,8 @@ const TaskListPage = () => {
           </div>
           <div className="mx-2">
             <Form.Select
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
             >
               {STATUS_DATA.map((option) => (
                 <option
@@ -145,7 +144,7 @@ const TaskListPage = () => {
       </div>
       <h2 className="text-center text-danger">Tasks list</h2>
       <TaskListComponent
-      assigneeOptions={assigneOptions}
+        assigneeOptions={assigneOptions}
         tasks={userListTasks}
         handleDeleteTask={handleDelete}
       />

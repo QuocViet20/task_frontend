@@ -9,7 +9,7 @@ import Loading from "../../../components/elements/loading/Loading";
 import EditUserFormComponent from "../../../components/elements/editUserForm/EditUserForm";
 
 //types
-import { EditUserForm, UserCreate } from "../../../types";
+import { EditUserForm, INewUser } from "../../../types";
 import { DEFAULT_EDITUSER_DATA, SUBMIT_BUTTON_LABEL, SUBMITTING_BUTTON_LABEL } from "./consts";
 
 // api
@@ -46,7 +46,7 @@ const EditUserPage = () => {
   }, [userResponse])
 
   const editUserMutation = useMutation({
-    mutationFn: (body: UserCreate) => {
+    mutationFn: (body: INewUser) => {
       return updateUser(userId as string, body)
     },
     onError: () => {
@@ -62,7 +62,7 @@ const EditUserPage = () => {
   })
 
   const onSubmit = (data: EditUserForm) => {
-    const updatedUser: UserCreate = {
+    const updatedUser: INewUser = {
       email: data.email,
       username: data.username,
       role: data.role,

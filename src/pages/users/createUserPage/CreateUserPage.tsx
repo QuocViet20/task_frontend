@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
 
 // types
-import { UserCreate, Role,IFormUserCreateAccount  } from "../../../types";
+import { INewUser, Role, IFormUserCreateAccount } from "../../../types";
 
 // style
 import "./CreateUser.css"
@@ -23,7 +23,7 @@ const CreateUser: React.FC = memo(() => {
   } = useForm<IFormUserCreateAccount>();
 
   const onSubmit: SubmitHandler<IFormUserCreateAccount> = (data: any) => {
-    const newUser: UserCreate = {
+    const newUser: INewUser = {
       email: data.email,
       username: data.username,
       password: data.password,
@@ -37,7 +37,7 @@ const CreateUser: React.FC = memo(() => {
   }
 
   const { mutate } = useMutation({
-    mutationFn: (body: UserCreate) => {
+    mutationFn: (body: INewUser) => {
       return createUser(body)
     },
     onError: () => {

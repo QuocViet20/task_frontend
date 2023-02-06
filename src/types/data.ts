@@ -5,10 +5,10 @@ export interface User {
   username: string;
   email: string;
   password: string;
-  role:Role;
+  role: Role;
 }
 
-export interface UserCreate {
+export interface INewUser {
   username: string;
   email: string;
   password: string;
@@ -16,7 +16,7 @@ export interface UserCreate {
   role: Role;
 }
 
-export interface UserCreateAccount {
+export interface IUserFormRegister {
   username: string;
   email: string;
   password: string;
@@ -31,7 +31,7 @@ export interface IFormUserCreateAccount {
   role: Role;
 }
 
-export interface UserLogin {
+export interface IUserFormLogin {
   email: string;
   password: string;
 }

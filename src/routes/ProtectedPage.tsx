@@ -1,4 +1,4 @@
-import { Routes, Route,Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { RoutePath } from "../types";
 
 //hooks
@@ -17,7 +17,6 @@ import UserInformation from "../pages/users/userInfomationPage/UserInfomationPag
 import ResetPasswordPage from "../pages/users/resetPasswordPage/ResetPasswordPage";
 import MyTaskPage from "../pages/tasks/myTask/MyTask";
 import MyInformation from "../pages/users/myInfomation/MyInformation";
-
 
 const ProtectedPages = () => {
   const { authData, isLoggedIn } = useAuth();
@@ -71,12 +70,12 @@ const ProtectedPages = () => {
 
   return (
     <Routes>
-       {protectedPages.map((protectedPage) => (
+      {protectedPages.map((protectedPage) => (
         <Route
           key={protectedPage.path}
           path={protectedPage.path}
           element={
-           isLoggedIn && authData.role ? (
+            isLoggedIn && authData.role ? (
               <PageLayout>{protectedPage.element}</PageLayout>
             ) : (
               <Navigate to={RoutePath.Login} />

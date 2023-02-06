@@ -8,7 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { memo } from "react";
 
 // types
-import { UserLogin } from "../../../types";
+import { IUserFormLogin } from "../../../types";
 
 // api_service
 import { apiClient } from "../../../api/serviceApi";
@@ -24,26 +24,9 @@ const Login: React.FC = memo(() => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserLogin>();
+  } = useForm<IUserFormLogin>();
 
-  // const loginMutation = useMutation({
-  //   mutationFn: (body: UserLogin) => {
-  //     return userLogin(body);
-  //   },
-  //   onError: (data: any) => {
-  //     toast.error(`${data.response.data}`, {
-  //       position: toast.POSITION.BOTTOM_RIGHT,
-  //     });
-  //   },
-  //   onSuccess: () => {
-  //     navigate("/");
-  //     toast.success("login success",{
-  //       position: toast.POSITION.TOP_RIGHT,
-  //     });
-  //   }
-  // })
-
-  const onsubmit: SubmitHandler<UserLogin> = async (data: any) => {
+  const onsubmit: SubmitHandler<IUserFormLogin> = async (data: any) => {
     const response = await apiClient.get((`/users?email=${data.email}&password=${data.password}`));
     console.log(response.data.length)
     if (response.data.length === 0) {
@@ -58,7 +41,7 @@ const Login: React.FC = memo(() => {
       role: response.data[0].role,
       userId: response.data[0].id,
     });
-    console.log(authData)
+
     navigate("/")
     toast.success("login success", {
       position: toast.POSITION.TOP_RIGHT

@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom"
 
 //types
-import { EditUserForm, UserCreate, Role, UserEditFormProps } from "../../../types";
+import { EditUserForm, Role, UserEditFormProps } from "../../../types";
 
 const EditUserFormComponent = ({
   defaultValues,

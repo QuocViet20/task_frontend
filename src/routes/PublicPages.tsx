@@ -6,16 +6,11 @@ import { Routes, Route } from 'react-router-dom'
 import PageLayout from "../components/layout/pageLayout/PageLayout";
 import useAuth from "../hooks/useAuth";
 
-const  PublicPages = () => {
-  const { isLoggedIn } = useAuth()
-  const publicPagesArr = [
+const PublicPages = () => {
+  const publicPages = [
     {
       path: `${RoutePath.Home}`,
       element: <HomePage />,
-    },
-    {
-      path: `${RoutePath.NotFound}`,
-      element: <NotFoundPage />,
     },
     {
       path: `${RoutePath.Register}`,
@@ -25,13 +20,13 @@ const  PublicPages = () => {
 
   return (
     <Routes>
-    { publicPagesArr.map((publicPage) => (
-      <Route
-        key={publicPage.path}
-        path={publicPage.path}
-        element={<PageLayout>{publicPage.element}</PageLayout>}
-      />
-    ))}
+      {publicPages.map((publicPage) => (
+        <Route
+          key={publicPage.path}
+          path={publicPage.path}
+          element={<PageLayout>{publicPage.element}</PageLayout>}
+        />
+      ))}
     </Routes>
   );
 }

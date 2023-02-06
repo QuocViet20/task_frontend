@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import _ from "lodash"
 
 // type 
-import { ResetPasswordForm, UserCreate } from "../../../types";
+import { ResetPasswordForm, INewUser } from "../../../types";
 
 //hooks
 import useAuth from "../../../hooks/useAuth";
@@ -31,7 +31,7 @@ const ResetPasswordPage = () => {
   } = useForm<ResetPasswordForm>()
 
   const resetPasswordMutation = useMutation({
-    mutationFn: (body: UserCreate) => {
+    mutationFn: (body: INewUser) => {
       return updateUser(authData.userId as string, body)
     },
     onError: () => {
@@ -63,7 +63,7 @@ const ResetPasswordPage = () => {
       setMatchPasswordError(true)
     } else {
       setMatchPasswordError(false)
-      const updateUser: UserCreate = {
+      const updateUser: INewUser = {
         email: authData.email,
         password: data.newPassword,
         role: authData.role,

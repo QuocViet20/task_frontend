@@ -14,7 +14,7 @@ const AuthPages = () => {
   ];
   return (
     <Routes>
-          {authPages.map((authPage) => (
+      {authPages.map((authPage) => (
         <Route
           key={authPage.path}
           path={authPage.path}

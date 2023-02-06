@@ -12,7 +12,7 @@ import PaginationComponent from "../../../components/elements/panigation/Paginat
 import TaskListComponent from "../../../components/elements/taskListComponent/TaskListComponent";
 
 //types
-import { RECORDS_PER_PAGE, STATUS_DATA }  from "../../../consts";
+import { RECORDS_PER_PAGE, STATUS_DATA } from "../../../consts";
 
 //api
 import { getTaskAssignee, deleteTask } from "../../../api/serviceApi";
@@ -46,7 +46,6 @@ const MyTaskPage = memo(() => {
       currentPage,
       limit: RECORDS_PER_PAGE,
       searchText,
-      status:"",
       assignee: userId as string
     }
 
@@ -126,15 +125,15 @@ const MyTaskPage = memo(() => {
               ))}
             </Form.Select>
           </div>
-          {authData.role === "Admin" &&        
-          <Link to={'/tasks/create_task_Admin'} className="mx-4">
-            <Button className="btn btn-primary">Add task</Button>
-          </Link>
+          {authData.role === "Admin" &&
+            <Link to={'/tasks/create_task_Admin'} className="mx-4">
+              <Button className="btn btn-primary">Add task</Button>
+            </Link>
           }
         </div>
       </div>
       <TaskListComponent
-      assigneeOptions={[]}
+        assigneeOptions={[]}
         tasks={data.data}
         handleDeleteTask={handleDelete}
       />
