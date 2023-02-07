@@ -4,7 +4,6 @@ import Register from "../pages/authPages/registerPage/Register";
 import { RoutePath } from "../types";
 import { Routes, Route } from 'react-router-dom'
 import PageLayout from "../components/layout/pageLayout/PageLayout";
-import useAuth from "../hooks/useAuth";
 
 const PublicPages = () => {
   const publicPages = [
