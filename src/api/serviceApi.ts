@@ -26,7 +26,7 @@ export const updateTask = (taskId: string, task: ITaskFormData) => {
 export const getTask = (taskId: string) =>
   apiClient.get<Task>(`/tasks/${taskId}`);
 
-export const getTasks = (params: {
+export const getTasks = (params:| {
   currentPage: number;
   limit: number;
   searchText: string;

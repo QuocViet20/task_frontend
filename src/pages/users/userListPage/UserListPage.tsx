@@ -86,23 +86,27 @@ const UserListPage = memo(() => {
   return (
     <div className="container">
       <div className="mt-4">
-        <div className=" d-flex ">
-          <div className="d-flex border align-items-center w-25 rounded" >
-            <Form.Control className="border-0 position-relative "
-              value={searchValue}
-              placeholder="Search"
-              onChange={(e) => {
-                setSearchValue(e.target.value);
-              }}
-            />
-            {searchValue &&
-              <h5 className="position-absolute search_close" onClick={() => setSearchValue("")}> x</h5>
-            }
+          <div className=" d-flex justify-content-space-between w-100">
+            <div className=" d-flex w-100">
+              <div className="d-flex border align-items-center w-25 rounded" >
+                <Form.Control className="border-0 position-relative "
+                  value={searchValue}
+                  placeholder="Search"
+                  onChange={(e) => {
+                    setSearchValue(e.target.value);
+                  }}
+                />
+                {searchValue &&
+                  <h5 className="position-absolute search_close" onClick={() => setSearchValue("")}> x</h5>
+                }
 
+              </div>
           </div>
-          <Link to={'/users/create'} className="mx-4">
-            <Button className="btn btn-primary">Create User</Button>
-          </Link>
+            <div>
+              <Link to={'/users/create'} className="mx-4">
+                <Button className="btn btn-primary">Create User</Button>
+              </Link>
+            </div>
         </div>
       </div>
       <div className="mt-4">

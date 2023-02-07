@@ -19,9 +19,6 @@ const TaskListComponent = ({
 }: TaskListComponentProps) => {
   const [show, setShow] = useState(false);
   const { authData } = useAuth()
-  console.log(assigneeOptions)
-
-
 
   return (
     <div className="mt-4">
@@ -32,13 +29,13 @@ const TaskListComponent = ({
               <tr className="text-center">
                 <th>NO</th>
                 <th>Title</th>
-                {assigneeOptions.length>0 && <th>Assignee</th> }
+                {assigneeOptions.length > 0 && <th>Assignee</th> }               
                 <th>Start time</th>
                 <th>End time</th>
                 <th>Progress</th>
                 <th>Status</th>
-                <th>Edit</th>
-                {authData.role === "Admin" && <th>Delete</th>}
+                <th colSpan={2}>Action</th>
+
               </tr>
             </thead>
             <tbody>
@@ -46,7 +43,7 @@ const TaskListComponent = ({
                 <tr key={task.id} className="text-center">
                   <td>{index + 1}</td>
                   <td>{task.title}</td>
-                  {assigneeOptions.length > 0 ? <td>{assigneeOptions.filter((option: Option) => option.value == task.assignee )[0].label}</td> :""}
+                  { assigneeOptions.length > 0 ? <td>{assigneeOptions?.find((item: Option) => Number(task.assignee) === item.value)?.label}</td> : ""}
                   <td>{moment(task.startTime).format('DD/MM /YYYY HH:mm A')}</td>
                   <td>{moment(task.endTime).format('DD/MM /YYYY HH:mm A')}</td>
                   <td className="text-danger" >{task.progress}%</td>

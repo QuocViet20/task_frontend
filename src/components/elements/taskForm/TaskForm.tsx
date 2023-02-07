@@ -10,6 +10,8 @@ import { ITaskFormData, Status, TaskFormProps } from "../../../types";
 
 //style
 import "./taskContainer.css"
+
+//hooks
 import useAuth from "../../../hooks/useAuth";
 
 const schema = yup.object({
@@ -37,7 +39,6 @@ const TaskForm = memo(
       register,
       reset,
       handleSubmit,
-      watch,
       formState: { errors },
     } = useForm<ITaskFormData>({
       resolver: yupResolver(schema),
@@ -125,10 +126,11 @@ const TaskForm = memo(
                   className="font-weight-bold mx-1 label_text">
                   Progress <span className="text-danger mx-2">{valueRange}%</span>
                 </Form.Label>
-                <Form.Range
+                <input type="range"
                   min="0"
                   max="100"
                   step="5"
+                  className="w-100 mt-2"
                   value={valueRange}
                   {...register("progress")}
                   onChange={(e) => setValueRange(e.target.value)}

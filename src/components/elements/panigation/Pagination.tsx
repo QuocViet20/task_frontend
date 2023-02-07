@@ -55,8 +55,8 @@ const PaginationComponent = memo((
             </Link>
           );
         })}
-      <Pagination.Next disabled={currentPage===totalPages} onClick={onNextClick}/>
-      <Pagination.Last disabled={currentPage===totalPages} onClick={onLastClick}/>
+      <Pagination.Next disabled={currentPage === totalPages} onClick={onNextClick}/>
+      <Pagination.Last disabled={currentPage === totalPages} onClick={onLastClick}/>
     </Pagination>
   )
 

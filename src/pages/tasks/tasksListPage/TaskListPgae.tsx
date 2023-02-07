@@ -33,7 +33,7 @@ const TaskListPage = () => {
   const [searchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState("");
   const [status, setStatus] = useState(STATUS_DATA[0].value)
-  const searchText = useDebounce(searchValue, 1000);
+  const searchText = useDebounce(searchValue, 500);
 
   const currentPage = Number(searchParams.get("page")) || 1;
 
@@ -60,14 +60,15 @@ const TaskListPage = () => {
     queryFn: () => getTasks(queryParams)
   })
 
-  const totalPages = useMemo(() => {
+  const totalCount = useMemo(() => {
     if (_.isNil(data) || _.isNil(data.headers["x-total-count"])) {
       return 0
     };
-    return Math.ceil(
-      parseInt(data.headers["x-total-count"]) / RECORDS_PER_PAGE
-    )
+    return  parseInt(data.headers["x-total-count"])
+     
   }, [data])
+
+  const totalPages = Math.ceil((totalCount-1)/RECORDS_PER_PAGE)
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => deleteTask(id),
@@ -110,36 +111,44 @@ const TaskListPage = () => {
   }
 
   const userListTasks: Task[] = data.data.filter((task: Task) => task.assignee !== authData.userId)
+  console.log(userListTasks)
   return (
     <div className="container">
       <div className="mt-4">
-        <div className=" d-flex">
-          <div className="d-flex border align-items-center w-25 rounded" >
-            <Form.Control className="border-0 position-relative "
-              value={searchValue}
-              placeholder="Search"
-              onChange={(e) => {
-                setSearchValue(e.target.value);
-              }}
-            />
-            {searchValue &&
-              <h5 className="position-absolute search_close" onClick={() => setSearchValue("")}> x</h5>
-            }
+        <div className="mt-4 d-flex justify-content-space-between w-100">
+          <div className=" d-flex w-100">
+            <div className="d-flex border align-items-center w-25 rounded" >
+              <Form.Control className="border-0 position-relative "
+                value={searchValue}
+                placeholder="Search"
+                onChange={(e) => {
+                  setSearchValue(e.target.value);
+                }}
+              />
+              {searchValue &&
+                <h5 className="position-absolute search_close" onClick={() => setSearchValue("")}> x</h5>
+              }
+            </div>
+            <div className="mx-2">
+              <Form.Select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                {STATUS_DATA.map((option) => (
+                  <option
+                    value={option.value}>{option.text}</option>
+                ))}
+              </Form.Select>
+            </div>
+
           </div>
-          <div className="mx-2">
-            <Form.Select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-            >
-              {STATUS_DATA.map((option) => (
-                <option
-                  value={option.value}>{option.text}</option>
-              ))}
-            </Form.Select>
+          <div>
+            <Link to={'/tasks/create'} className="mx-5">
+              <Button className="btn btn-primary">Add task</Button>
+            </Link>
           </div>
-          <Link to={'/tasks/create'} className="mx-4">
-            <Button className="btn btn-primary">Add task</Button>
-          </Link>
+        </div>
+        <div>
         </div>
       </div>
       <h2 className="text-center text-danger">Tasks list</h2>
