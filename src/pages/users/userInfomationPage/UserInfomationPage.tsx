@@ -9,7 +9,10 @@ import { toast } from "react-toastify";
 //components
 import Loading from "../../../components/elements/loading/Loading";
 import PaginationComponent from "../../../components/elements/panigation/Pagination";
+import TaskListComponent from "../../../components/elements/taskListComponent/TaskListComponent";
 
+//style
+import "./UserInfomationPage.scss"
 //types
 import { RECORDS_PER_PAGE, STATUS_DATA } from "../../../consts";
 
@@ -18,7 +21,6 @@ import { getTaskAssignee, getUserId, deleteTask } from "../../../api/serviceApi"
 
 // hooks
 import useDebounce from "../../../hooks/useSearch";
-import TaskListComponent from "../../../components/elements/taskListComponent/TaskListComponent";
 import useAuth from "../../../hooks/useAuth";
 
 
@@ -143,7 +145,7 @@ const UserInformation = memo(() => {
                 }}
               />
               {searchValue &&
-                <h5 className="position-absolute search_close" onClick={() => setSearchValue("")}> x</h5>
+                <h5 className="position-absolute search_close_myTask" onClick={() => setSearchValue("")}> x</h5>
               }
             </div>
             <div className="mx-2">
