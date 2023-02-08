@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useMutation } from "@tanstack/react-query";
+
 import { memo } from "react";
 
 // types
@@ -15,6 +15,9 @@ import { apiClient } from "../../../api/serviceApi";
 
 // hooks
 import useAuth from '../../../hooks/useAuth'
+
+//styles
+import "./LoginPage.scss"
 
 const Login: React.FC = memo(() => {
   const { setAuth, authData } = useAuth();
@@ -50,12 +53,12 @@ const Login: React.FC = memo(() => {
 
   return (
     <div className="container d-flex justify-content-center marginTop">
-      <Card className="card_container">
+      <Card className="card_userForm">
         <h3 className="text-center text-success font-italic">Đăng nhập</h3>
         <Form onSubmit={handleSubmit(onsubmit)}>
           <FormGroup className="mt-2">
             <Form.Label
-              className="font-weight-bold mx-1 label_text">
+              className="font-weight-bold mx-1">
               Tài khoản
             </Form.Label>
             <Form.Control
@@ -78,7 +81,7 @@ const Login: React.FC = memo(() => {
           </FormGroup>
           <FormGroup className="mt-2">
             <Form.Label
-              className="font-weight-bold mx-1 label_text">
+              className="font-weight-bold mx-1">
               Mật khẩu
             </Form.Label>
             <Form.Control

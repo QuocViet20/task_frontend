@@ -8,9 +8,6 @@ import { useMutation } from "@tanstack/react-query";
 // types
 import { INewUser, Role, IFormUserCreateAccount } from "../../../types";
 
-// style
-import "./CreateUser.css"
-
 // service_api
 import { createUser } from "../../../api/serviceApi";
 
@@ -54,7 +51,7 @@ const CreateUser: React.FC = memo(() => {
 
   return (
     <div className="container d-flex justify-content-center marginTop">
-      <Card className="card_container">
+      <Card className="card_userForm">
         <h3 className="text-center text-success font-italic">Create Account</h3>
         <Form onSubmit={handleSubmit(onSubmit)} >
           <Form.Group className="mt-2">

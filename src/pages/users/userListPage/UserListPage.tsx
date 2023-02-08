@@ -26,7 +26,7 @@ import { deleteUser, getUsers } from "../../../api/serviceApi";
 import useDebounce from "../../../hooks/useSearch";
 
 // styles
-import './UserListPage.css'
+import './UserListPage.scss'
 
 
 const UserListPage = memo(() => {
@@ -82,6 +82,15 @@ const UserListPage = memo(() => {
   if (isLoading) {
     return <Loading />
   }
+  const users = data.data;
+ 
+  if(users.length ===0 && totalPages > 0){
+    navigate("/users?page=1")
+  }
+  
+  if(!users){
+    navigate("/users?page=0")
+  }
 
   return (
     <div className="container">
@@ -101,6 +110,7 @@ const UserListPage = memo(() => {
                 }
 
               </div>
+              <Button className="btn btn-info mx-2" onClick={() => setSearchValue(searchValue)}>Search</Button>
           </div>
             <div>
               <Link to={'/users/create'} className="mx-4">
@@ -112,7 +122,7 @@ const UserListPage = memo(() => {
       <div className="mt-4">
         <h2 className="text-center text-danger">Users list</h2>
         {
-          data?.data.length > 0 ? (
+          users.length > 0 ? (
             <Table striped bordered hover variant="light" className="mt-4">
               <thead>
                 <tr className="text-center">
@@ -120,12 +130,11 @@ const UserListPage = memo(() => {
                   <th>Email</th>
                   <th>Username</th>
                   <th>Detail</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
+                  <th colSpan={2}>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {data.data.map((user: User, index: number) => (
+                {users.map((user: User, index: number) => (
                   <tr key={user.id} className="text-center">
                     <td>{index + 1}</td>
                     <td>{user.email}</td>

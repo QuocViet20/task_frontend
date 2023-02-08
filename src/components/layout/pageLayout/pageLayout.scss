@@ -1,0 +1,37 @@
+
+.navbar_bg{
+  background-color:rgb(92, 175, 175)
+}
+
+.prefix_brands{
+  font-size: 25px;
+  color: black;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.prefix_brands:hover{
+  color: yellow;
+}
+
+.navBar_item{
+  color: black;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.navBar_item:hover{
+  color: #fff;
+}
+
+.navbar_item_active {
+  color: yellow;
+  text-shadow: 5px;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 5px;
+  margin-right: 10px;
+  margin-top: 5px;
+}

@@ -19,11 +19,9 @@ export enum RoutePath {
   TaskList = "/tasks",
   CreateUser = "/users/create",
   CreateTask = "/tasks/create",
-  CreateTaskAdmin = "/tasks/create_task_admin",
   EditTask = "/tasks/:taskId/edit",
   EditUser = "/users/:userId/edit",
-  ResetPasswordUser = "/user/:userId/resetPassword",
+  ResetPasswordUser = "/users/:userId/resetPassword",
   InfomationUser = "users/:userId",
-  MyTasks = "user/:userId/myTasks",
-  MyInfomation = "user/:userId/myInformation"
+  MyInfomation = "users/:userId/myInformation"
 }

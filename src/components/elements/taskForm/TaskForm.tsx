@@ -9,7 +9,7 @@ import * as yup from "yup";
 import { ITaskFormData, Status, TaskFormProps } from "../../../types";
 
 //style
-import "./taskContainer.css"
+import "./TaskForm.scss"
 
 //hooks
 import useAuth from "../../../hooks/useAuth";
@@ -157,7 +157,7 @@ const TaskForm = memo(
                     {submitButtonLabel}
                   </Button>)
                 }
-                <Link to={authData.role === "Admin" ? "/tasks" : `/users/${defaultValues.assignee}/myTasks`} className=" btn btn-warning mt-3 mx-2"> Back</Link>
+                <Link to={authData.role === "Admin" ? "/tasks" : `/users/${defaultValues.assignee}`} className=" btn btn-warning mt-3 mx-2"> Back</Link>
               </div>
             </Form>
           </Card.Body>

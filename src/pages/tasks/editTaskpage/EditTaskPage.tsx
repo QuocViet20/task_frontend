@@ -86,6 +86,7 @@ const EditTaskPage = memo(() => {
     if (authData.role === "Admin" && data.assignee === authData.role) {
       data.assignee = authData.userId
     }
+    console.log(data)
     editTaskMutation.mutate(data)
   }
 
@@ -97,16 +98,13 @@ const EditTaskPage = memo(() => {
   }
 
   const defaultValues = () => {
-    if (_.isNil(taskResponse)) {
-      return DEFAULT_TASK_FORM_DATA
-    }
     const { title, assignee, startTime, endTime, status, progress } = taskResponse.data;
     if (authData.role === "Admin" && assignee === authData.userId) {
       return { title, assignee: "Admin", startTime, endTime, status, progress }
     }
     return { title, assignee, startTime, endTime, status, progress }
   }
-
+  
   return (
     <TaskForm
       formTitle={TASK_FORM_TITLE}

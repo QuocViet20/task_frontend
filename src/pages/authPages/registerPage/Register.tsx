@@ -1,6 +1,5 @@
-
 // style
-import './RegisterPage.css'
+import './RegisterPage.scss'
 // library
 import React, { memo } from "react";
 import { useMutation } from "@tanstack/react-query";
@@ -17,6 +16,7 @@ import { toast } from "react-toastify";
 
 //types
 import { IUserFormRegister, INewUser, Role } from '../../../types';
+
 //api_service
 import { createUser } from '../../../api/serviceApi';
 
@@ -65,7 +65,7 @@ const Register: React.FC = memo(() => {
 
   return (
     <div className="container d-flex justify-content-center marginTop">
-      <Card className='card_container'>
+      <Card className='card_userForm'>
         <h3 className="text-center text-success font-italic">
           Đăng ký tài khoản
         </h3>

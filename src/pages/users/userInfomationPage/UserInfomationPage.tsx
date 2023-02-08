@@ -1,9 +1,9 @@
 
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { memo, useMemo, useState } from "react"
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams, Link } from "react-router-dom";
 import _ from "lodash"
-import { Form } from "react-bootstrap";
+import { Form, Button} from "react-bootstrap";
 import { toast } from "react-toastify";
 
 //components
@@ -19,9 +19,11 @@ import { getTaskAssignee, getUserId, deleteTask } from "../../../api/serviceApi"
 // hooks
 import useDebounce from "../../../hooks/useSearch";
 import TaskListComponent from "../../../components/elements/taskListComponent/TaskListComponent";
+import useAuth from "../../../hooks/useAuth";
 
 
 const UserInformation = memo(() => {
+  const { authData } = useAuth()
   const { userId } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -106,9 +108,18 @@ const UserInformation = memo(() => {
       </div>
     )
   }
+
+  if(data.data.length === 0 && totalPages > 0 ) {
+    navigate(`/users/${userId}?assignee=${userId}&page=1`)
+  }
+  if(!data.data) {
+    navigate(`/users/${userId}?assignee=${userId}&page=0`)
+  }
+
+
   return (
     <div className="container mt-4">
-      <div className="container d-flex justify-content-center">
+    {authData.role === "Admin" && authData.userId !== userId && <div className="container d-flex justify-content-center">
         {user?.data &&
           <div >
             <h2 className="text-success">User infomation</h2>
@@ -118,32 +129,46 @@ const UserInformation = memo(() => {
           </div>
         }
       </div>
+}
+      {authData.role === "Admin" && authData.userId !== userId && <h2 className="text-center text-danger">Tasks list of {user.data.username}</h2> }
       <div className="mt-4">
-        <h2 className="text-center text-danger">Tasks list of {user.data.username}</h2>
-        <div className=" d-flex">
-          <div className="d-flex border align-items-center w-25 rounded" >
-            <Form.Control className="border-0 position-relative "
-              value={searchValue}
-              placeholder="Search"
-              onChange={(e) => {
-                setSearchValue(e.target.value);
-              }}
-            />
-            {searchValue &&
-              <h5 className="position-absolute search_close" onClick={() => setSearchValue("")}> x</h5>
-            }
+        <div className="mt-4 d-flex justify-content-space-between w-100">
+          <div className=" d-flex w-100">
+            <div className="d-flex border align-items-center w-25 rounded" >
+              <Form.Control className="border-0 position-relative "
+                value={searchValue}
+                placeholder="Search"
+                onChange={(e) => {
+                  setSearchValue(e.target.value);
+                }}
+              />
+              {searchValue &&
+                <h5 className="position-absolute search_close" onClick={() => setSearchValue("")}> x</h5>
+              }
+            </div>
+            <div className="mx-2">
+              <Form.Select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                {STATUS_DATA.map((option) => (
+                  <option
+                    value={option.value}>{option.text}
+                  </option>
+                ))}
+              </Form.Select>
+            </div>
+            <Button className="btn btn-info" onClick={() => setSearchValue(searchValue)}>Search</Button>
           </div>
-          <div className="mx-2">
-            <Form.Select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-            >
-              {STATUS_DATA.map((option) => (
-                <option
-                  value={option.value}>{option.text}</option>
-              ))}
-            </Form.Select>
-          </div>
+          {authData.role === "Admin" && authData.userId === userId && 
+            <div>
+              <Link to={'/tasks/create'} className="mx-5">
+                <Button className="btn btn-primary">Add task</Button>
+              </Link>
+            </div>
+          }
+        </div>
+        <div>
         </div>
       </div>
       <TaskListComponent

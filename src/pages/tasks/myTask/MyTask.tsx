@@ -84,7 +84,11 @@ const MyTaskPage = memo(() => {
   }
 
   const onPageChange = (pageNumber: number) => {
-    navigate(`/users/${userId}/myTasks?assignee=${userId}&page=${pageNumber}`)
+    navigate(`/users/myTasks/${userId}?page=${pageNumber}`)
+  }
+
+  if(data.data.length === 0) {
+    navigate(`/users/myTasks/${userId}?page=1`)
   }
 
   if (isLoading) {
@@ -97,6 +101,9 @@ const MyTaskPage = memo(() => {
       </div>
     )
   }
+
+  console.log(data.data)
+
   return (
     <div className="container mt-4">
       <div className="mt-4">
@@ -125,6 +132,7 @@ const MyTaskPage = memo(() => {
                 ))}
               </Form.Select>
             </div>
+            <Button className="btn btn-info" onClick={() => setSearchValue(searchValue)}>Search</Button>
           </div>
           <div>
             <Link to={'/tasks/create'} className="mx-5">

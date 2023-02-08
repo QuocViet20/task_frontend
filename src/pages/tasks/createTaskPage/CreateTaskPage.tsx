@@ -21,7 +21,11 @@ import {
 // components
 import TaskForm from "../../../components/elements/taskForm/TaskForm";
 
+// hooks
+import useAuth from "../../../hooks/useAuth";
+
 const CreateTaskPage = memo(() => {
+  const { authData } = useAuth()
 
   const { data: assigneeResponse } = useQuery({
     queryKey: ["assigneeTask"],
@@ -56,6 +60,9 @@ const CreateTaskPage = memo(() => {
   })
 
   const onSubmit = (data: ITaskFormData) => {
+    if(data.assignee ===  authData.role){
+      data.assignee = authData.userId;
+    }
     createTaskMutation.mutate(data);
   }
 

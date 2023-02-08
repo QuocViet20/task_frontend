@@ -5,6 +5,9 @@ import { Link } from "react-router-dom"
 //types
 import { EditUserForm, Role, UserEditFormProps } from "../../../types";
 
+//hooks
+import useAuth from "../../../hooks/useAuth";
+
 const EditUserFormComponent = ({
   defaultValues,
   submitButtonLabel,
@@ -13,6 +16,7 @@ const EditUserFormComponent = ({
   onSubmit,
 }: UserEditFormProps
 ) => {
+  const { authData } = useAuth();
   const {
     register,
     handleSubmit,
@@ -22,7 +26,7 @@ const EditUserFormComponent = ({
 
   return (
     <div className="container d-flex justify-content-center marginTop">
-      <Card className="card_container">
+      <Card className="card_userForm">
         <h3 className="text-center text-success font-italic">Edit user infomation</h3>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Form.Group className="mt-2">
@@ -75,20 +79,22 @@ const EditUserFormComponent = ({
               </span>
             )}
           </Form.Group>
-          <Form.Group className="mt-2">
-            <Form.Label
-              className="font-weight-bold mx-1 label_text">
-              Role
-            </Form.Label>
-            <Form.Select
-              {...register("role", {
+          { authData.role === "Admin" &&  
+            <Form.Group className="mt-2">
+              <Form.Label
+                className="font-weight-bold mx-1 label_text">
+                Role
+              </Form.Label>
+              <Form.Select
+                {...register("role", {
 
-              })}
-            >
-              <option value={Role.User}>{Role.User}</option>
-              <option value={Role.Admin}>{Role.Admin}</option>
-            </Form.Select>
-          </Form.Group>
+                })}
+              >
+                <option value={Role.User}>{Role.User}</option>
+                <option value={Role.Admin}>{Role.Admin}</option>
+              </Form.Select>
+            </Form.Group>
+          } 
           <div className=" d-flex justify-content-between">
             {isSubmitting ?
               (<Button className="mt-3" type="submit">

@@ -77,13 +77,14 @@ const ResetPasswordPage = () => {
   if (isGetUserError) {
     return <h1 className="container text-center text-danger"></h1>
   }
+  
   if (isGetUserLoading) {
     return <Loading />
   }
 
   return (
     <div className="container d-flex justify-content-center marginTop">
-      <Card className="card_container">
+      <Card className="card_userForm">
         <h3 className="text-center text-success font-italic">Reset Password</h3>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Form.Group className="mt-2">

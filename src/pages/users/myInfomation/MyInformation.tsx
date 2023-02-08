@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import { memo } from "react"
-import {  useParams } from "react-router-dom";
+import {  Link, useParams } from "react-router-dom";
 import _ from "lodash"
 
 //components
@@ -42,6 +42,11 @@ const MyInformation = memo(() => {
             <p>Role: {user.data.role}</p>
           </div>
         }
+        <div className="mx-5 mt-2">
+          <Link to={`/users/${userId}/edit`}>
+            <button className="btn btn-info">Edit</button>
+          </Link>
+          </div>
       </div>
     </div>
   )

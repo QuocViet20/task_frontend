@@ -18,7 +18,7 @@ import { Task, User } from "../../../types";
 import { RECORDS_PER_PAGE, STATUS_DATA } from "./consts";
 
 // api
-import { deleteTask, getTasks, getAssignee } from "../../../api/serviceApi";
+import { deleteTask, getTasks, getAssignee, getTaskAdmin } from "../../../api/serviceApi";
 
 //hooks
 import useDebounce from "../../../hooks/useSearch";
@@ -29,6 +29,7 @@ import TaskListComponent from "../../../components/elements/taskListComponent/Ta
 
 const TaskListPage = () => {
   const { authData } = useAuth();
+  const userIdAdmin = String(authData.userId)
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState("");
@@ -68,7 +69,7 @@ const TaskListPage = () => {
      
   }, [data])
 
-  const totalPages = Math.ceil((totalCount-1)/RECORDS_PER_PAGE)
+  
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => deleteTask(id),
@@ -102,6 +103,19 @@ const TaskListPage = () => {
     }))
   }, [assigneeResponse])
 
+  const { data: tasksAdmin, isLoading: isGetTasksAdmin, } = useQuery({
+    queryKey: ["getTasksAdmin"],
+    queryFn: () => getTaskAdmin(authData.userId as string ),
+    enabled: !_.isNil(authData.userId)
+  })
+  if (isGetTasksAdmin) {
+    return <Loading />
+  }
+  const getTasksAdmin = tasksAdmin?.data;
+console.log(totalCount)
+  const totalPages = totalCount > 0 ? Math.ceil((totalCount-getTasksAdmin.length)/RECORDS_PER_PAGE) : 0
+
+
   if (isLoading) {
     return <Loading />
   }
@@ -110,8 +124,15 @@ const TaskListPage = () => {
     return <Loading />
   }
 
+
   const userListTasks: Task[] = data.data.filter((task: Task) => task.assignee !== authData.userId)
   console.log(userListTasks)
+  if(userListTasks.length === 0 && totalCount > 0) {
+    navigate(`/tasks?page=1`)
+  }
+  if(!userListTasks){
+    navigate(`/tasks?page=0`)
+  }
   return (
     <div className="container">
       <div className="mt-4">
@@ -140,7 +161,7 @@ const TaskListPage = () => {
                 ))}
               </Form.Select>
             </div>
-
+            <Button className="btn btn-info" onClick={() => setSearchValue(searchValue)}>Search</Button>
           </div>
           <div>
             <Link to={'/tasks/create'} className="mx-5">
