@@ -83,7 +83,7 @@ const TaskForm = memo(
                     <Form.Select
                       {...register("assignee")}
                     >
-                     <option value="">Assignee</option>
+                     <option value=""></option>
                      <option value="Admin">Admin</option>
                       {assigneOptions.map((assignee) => (
                         <option value={assignee.value}>{assignee.label}</option>

@@ -23,5 +23,6 @@ export enum RoutePath {
   EditUser = "/users/:userId/edit",
   ResetPasswordUser = "/users/:userId/resetPassword",
   InfomationUser = "users/:userId",
-  MyInfomation = "users/:userId/myInformation"
+  MyInfomation = "users/:userId/myInformation",
+  Kanban = "/kanban"
 }

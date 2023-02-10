@@ -41,7 +41,7 @@ export interface AuthData {
   email: string;
   accessToken: string;
   role: Role;
-  userId: number;
+  userId: number | string;
 }
 
 export interface ITaskFormData {
@@ -54,7 +54,7 @@ export interface ITaskFormData {
 }
 
 export interface Task {
-  id: number | undefined;
+  id: number | undefined | string;
   startTime: string;
   endTime: string;
   assignee: string;

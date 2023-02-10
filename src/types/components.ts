@@ -23,6 +23,7 @@ export interface UserEditFormProps {
 export interface PanigationProps {
   currentPage: number;
   totalPages: number;
+  maxLength: number;
   onPageChange: (newPage: number) => void;
 }
 

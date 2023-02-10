@@ -5,17 +5,16 @@ import { Link } from 'react-router-dom';
 
 //types
 import { PanigationProps } from '../../../types';
-import { createArrayFromLength } from '../../../utils/array';
+import { getPaginationItems } from '../../../utils/paginationArray';
 
 const PaginationComponent = memo((
   {
     currentPage,
     totalPages,
+    maxLength,
     onPageChange
   }: PanigationProps) => {
-    const pages = useMemo(() => {
-      return createArrayFromLength(totalPages, true)
-    },[totalPages])
+    const pageNums = getPaginationItems(currentPage,totalPages, maxLength)
 
     const onFirstClick = () => {
       onPageChange(1)
@@ -38,7 +37,7 @@ const PaginationComponent = memo((
     <Pagination className="mt-4">
         <Pagination.First disabled={currentPage ===1} onClick={onFirstClick}/>
         <Pagination.Prev disabled={currentPage===1} onClick={onPrevClick} />
-        {pages.map((pageNumber) => {
+        {pageNums.map((pageNumber) => {
           return (
             <Link
               to={`/tasks?page=${pageNumber}`}
@@ -50,7 +49,7 @@ const PaginationComponent = memo((
                   onPageChange(pageNumber)
                 }}
               >
-                {pageNumber}
+                {!isNaN(pageNumber) ? pageNumber : "..."}
               </Pagination.Item>
             </Link>
           );

@@ -14,6 +14,7 @@ import UserInformation from "../pages/users/userInfomationPage/UserInfomationPag
 import ResetPasswordPage from "../pages/users/resetPasswordPage/ResetPasswordPage";
 import MyInformation from "../pages/users/myInfomation/MyInformation";
 import Login from '../pages/authPages/loginPage/Login';
+import Kanban from '../pages/kanban/Kanban';
 
 //hooks
 import useAuth from "../hooks/useAuth";
@@ -73,6 +74,10 @@ const RoutesPage = () => {
     {
       path: `${RoutePath.MyInfomation}`,
       element: <MyInformation />,
+    },
+    {
+      path: `${RoutePath.Kanban}`,
+      element: <Kanban />,
     },
   ];
 

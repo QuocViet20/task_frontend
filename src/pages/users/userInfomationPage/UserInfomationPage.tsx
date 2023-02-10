@@ -180,6 +180,7 @@ const UserInformation = memo(() => {
       />
       <div>
         <PaginationComponent
+          maxLength={5}
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={onPageChange}

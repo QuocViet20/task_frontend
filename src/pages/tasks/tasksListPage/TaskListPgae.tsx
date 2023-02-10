@@ -15,7 +15,9 @@ import PaginationComponent from "../../../components/elements/panigation/Paginat
 
 //type
 import { Task, User } from "../../../types";
-import { RECORDS_PER_PAGE, STATUS_DATA } from "./consts";
+
+//consts
+import { RECORDS_PER_PAGE, STATUS_DATA, MAX_LENGTH } from "./consts";
 
 // api
 import { deleteTask, getTasks, getAssignee, getTaskAdmin } from "../../../api/serviceApi";
@@ -29,7 +31,6 @@ import TaskListComponent from "../../../components/elements/taskListComponent/Ta
 
 const TaskListPage = () => {
   const { authData } = useAuth();
-  const userIdAdmin = String(authData.userId)
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState("");
@@ -112,10 +113,10 @@ const TaskListPage = () => {
     return <Loading />
   }
   const getTasksAdmin = tasksAdmin?.data;
-console.log(totalCount)
   const totalPages = totalCount > 0 ? Math.ceil((totalCount-getTasksAdmin.length)/RECORDS_PER_PAGE) : 0
-
-
+console.log("totalCount"+totalCount)
+  console.log("currentPage:"+currentPage)
+  console.log("totalPage:" + totalPages)
   if (isLoading) {
     return <Loading />
   }
@@ -126,13 +127,15 @@ console.log(totalCount)
 
 
   const userListTasks: Task[] = data.data.filter((task: Task) => task.assignee !== authData.userId)
-  console.log(userListTasks)
-  if(userListTasks.length === 0 && totalCount > 0) {
-    navigate(`/tasks?page=1`)
-  }
-  if(!userListTasks){
-    navigate(`/tasks?page=0`)
-  }
+
+  // if(userListTasks.length === 0 && totalCount > 0) {
+  //   navigate(`/tasks?page=1`)
+  // }
+
+  // if(!userListTasks){
+  //   navigate(`/tasks?page=0`)
+  // }
+
   return (
     <div className="container">
       <div className="mt-4">
@@ -182,6 +185,7 @@ console.log(totalCount)
         <PaginationComponent
           currentPage={currentPage}
           totalPages={totalPages}
+          maxLength={MAX_LENGTH}
           onPageChange={onPageChange}
         />
       </div>

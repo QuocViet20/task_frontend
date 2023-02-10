@@ -121,7 +121,9 @@ const Register: React.FC = memo(() => {
                 type="password"
                 {...register("password", {
                   required: true,
-                  minLength: 6,
+                  minLength: 8,
+                  pattern:
+                   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
                 })}
               />
             </FloatingLabel>
@@ -131,7 +133,10 @@ const Register: React.FC = memo(() => {
               </span>
             )}
             {errors.password?.type === "minLength" && (
-              <span className="mt-1 text-danger">Mật khẩu ít nhất 6 ký tự</span>
+              <span className="mt-1 text-danger">Mật khẩu ít nhất 8 ký tự</span>
+            )}
+            {errors.password?.type === "pattern" && (
+              <span className="mt-1 text-danger">Mật khẩu phải có ít nhất một ký tự đặc biệt, một số, một chữ hoa</span>
             )}
           </FormGroup>
           <FormGroup className="mt-3">

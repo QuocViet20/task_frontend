@@ -46,6 +46,8 @@ export const getTaskAdmin = ((userId: string) => {
   return apiClient.get(`/tasks?assignee=${userId}`)
 })
 
+export const getAllTask = () => apiClient.get('/tasks')
+
 export const getTaskAssignee = (params: {
   currentPage: number;
   limit: number;
