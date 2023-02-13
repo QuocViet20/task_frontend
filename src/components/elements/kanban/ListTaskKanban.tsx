@@ -4,7 +4,6 @@ import TaskItem from "./TaskItem";
 //types
 import { Task } from "../../../types";
 import React from "react";
-import { take } from "lodash";
 
 interface ListTaskKanbanProps {
   listTaskTodo: Task[];
@@ -19,15 +18,15 @@ const ListTaskKanban = ({
   }:ListTaskKanbanProps ) => {
 
   return (
-    <div className="row px-5">
+    <div className="row gx-4">
       <Droppable droppableId="Todo">
         {(provided, snapshot) => (
           <div
-            className={` col-4 ${snapshot.isDraggingOver ? "dragactive" : ""}`}
+            className={`col-4`}
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-              <div className="px-2 bg-success">
+              <div className={`todos ${snapshot.isDraggingOver ? "dragTodo" : ""}`}>
               <h4 className="text-center">Todo</h4>
               {listTaskTodo.map((task, index) => (
                 <TaskItem
@@ -43,11 +42,11 @@ const ListTaskKanban = ({
       <Droppable droppableId="Doing">
         {(provided, snapshot) => (
           <div
-            className={`todos col-4 ${snapshot.isDraggingOver ? "dragactive" : ""}`}
+            className="col-4"
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            <div className="px-2 bg-primary">
+            <div className={`doing ${snapshot.isDraggingOver ? "dragDoing" : ""}`}>
               <h4 className="text-center">Doing</h4>
               {listTaskDoing && listTaskDoing.map((task, index) => (
                 <TaskItem
@@ -63,18 +62,20 @@ const ListTaskKanban = ({
       <Droppable droppableId="Done">
         {(provided, snapshot) => (
           <div
-            className={`todos col-4 bg-danger${snapshot.isDraggingOver ? "dragactive" : ""}`}
+            className="col-4"
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            <span className="text-center">Done</span>
-            {listTaskDone.map((task, index) => (
-                <TaskItem
-                task={task}
-                index={index}
-                key={task.id}
-                />
-              ))}
+            <div className={`done ${snapshot.isDraggingOver ? "dragDone" : ""}`}>
+              <h4 className="text-center">Done</h4>
+              {listTaskDone.map((task, index) => (
+                  <TaskItem
+                  task={task}
+                  index={index}
+                  key={task.id}
+                  />
+                ))}
+            </div>
           </div>
         )}
       </Droppable>

@@ -5,9 +5,23 @@ import ListTaskKanban from "./ListTaskKanban";
 //hooks
 import useAuth from "../../../hooks/useAuth";
 
+//types
+import './KanbanComponents.scss'
+
 export interface KanbanProps{
   tasks: Task[]
 }
+
+export interface IColumn {
+  id:string;
+  columnTasks: Task[];
+}
+
+export interface IColumns {
+  [key: string]: IColumn;
+}
+
+
 
 const KanbanComponent = ({ tasks }: KanbanProps) => {
   const { authData } = useAuth();
@@ -15,6 +29,21 @@ const KanbanComponent = ({ tasks }: KanbanProps) => {
   const initialListTaskDoing = tasks.filter((item: Task) => item.status === "Doing" && Number(item.assignee) != authData.userId)
   const initialListTaskDone = tasks.filter((item: Task) => item.status === "Done" && Number(item.assignee) != authData.userId)
 
+  const initialColumns:IColumns = {
+    "Todo": {
+      id:"Todo",
+      columnTasks:initialListTaskTodo
+    },
+    "Doing": {
+      id:"Doing",
+      columnTasks:initialListTaskDoing
+    },
+    "Done": {
+      id:"Done",
+      columnTasks:initialListTaskDone
+    },
+  }
+  const [columns, setColumns ] = useState<IColumns>(initialColumns)
   const [listTaskTodo, setListTaskTodo] = useState<Task[]>(initialListTaskTodo)
   const [listTaskDoing, setListTaskDoing] = useState<Task[]>(initialListTaskDoing)
   const [listTaskDone, setListTaskDone] = useState<Task[]>(initialListTaskDone)
@@ -26,7 +55,6 @@ const KanbanComponent = ({ tasks }: KanbanProps) => {
     if(source.droppableId === "Todo" && destination.droppableId === "Todo"){
       const newList = listTaskTodo.filter((item:Task,index:number) => index !== source.index);
       newList.splice(destination.index, 0, listTaskTodo[source.index])
-     
       setListTaskTodo(newList)
     }
     else if(source.droppableId === "Doing" && destination.droppableId === "Doing"){

@@ -1,0 +1,54 @@
+.todos, .done{
+  padding: 15px;
+  margin-bottom: 10px;
+  background-color: rgb(25, 196, 139);
+  padding-bottom: 30px;
+  margin-bottom: 40px;
+}
+
+.dragTodo {
+  background-color: rgb(110, 223, 100);
+}
+
+.doing{
+  padding: 15px;
+  margin-bottom: 10px;
+  background-color: rgba(50, 195, 205);
+  padding-bottom: 30px;
+}
+
+.dragDoing{
+  background-color: rgb(28, 131, 136);
+}
+
+.done {
+  background-color: rgba(235, 103, 80);
+}
+
+.dragDone{
+  background-color: rgba(225, 38, 0);
+  padding-bottom: 40px;
+}
+
+.taskItem{
+  background-color: lavender;
+  padding: 5px;
+  margin-bottom: 15px;
+}
+
+.detailIte {
+  color: aqua;
+}
+.edit {
+  color: red
+}
+
+.card:hover{
+  box-shadow: 0 0 5px black;
+  transform: scale(1.06);
+}
+
+.detail_btn {
+  color:rgb(9, 139, 156);
+  cursor: pointer;
+}
