@@ -53,14 +53,25 @@ export interface ITaskFormData {
   status: Status;
 }
 
-export interface Task {
-  id: number | undefined | string;
+export interface NewTask {
   startTime: string;
   endTime: string;
   assignee: string;
   progress: string;
   title: string;
   status: Status;
+  comments: Comment[];
+}
+
+export interface Task {
+  id?: number | undefined | string;
+  startTime: string;
+  endTime: string;
+  assignee: string;
+  progress: string;
+  title: string;
+  status: Status;
+  comments:Comment[];
 }
 
 export interface Assignee {
@@ -73,6 +84,12 @@ export interface Option {
   label: string;
   value: any;
 }
+
+export interface Comment{
+  userId?:number |string
+  comment: string
+}
+
 export interface EditUserForm {
   email: string;
   username: string;

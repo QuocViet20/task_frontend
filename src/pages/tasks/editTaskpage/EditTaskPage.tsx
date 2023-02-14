@@ -1,16 +1,16 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import _ from "lodash"
-import { memo, useMemo, useState } from "react";
+import { memo, useMemo } from "react";
 
 import { toast } from "react-toastify";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 //components
 import TaskForm from "../../../components/elements/taskForm/TaskForm";
 import Loading from "../../../components/elements/loading/Loading";
 
 // types
-import { ITaskFormData, User, Status } from "../../../types";
+import { ITaskFormData, User, Status, NewTask } from "../../../types";
 import { DEFAULT_TASK_FORM_DATA } from "../../../consts";
 
 import {
@@ -53,11 +53,8 @@ const EditTaskPage = memo(() => {
     }))
   }, [assigneeResponse])
 
-
-
-
   const editTaskMutation = useMutation({
-    mutationFn: (body: ITaskFormData) => {
+    mutationFn: (body: NewTask) => {
       return updateTask(taskId as string, body);
     },
     onError: () => {
@@ -87,7 +84,7 @@ const EditTaskPage = memo(() => {
       data.assignee = authData.userId
     }
     console.log(data)
-    editTaskMutation.mutate(data)
+    editTaskMutation.mutate({...data, comments:defaultValues().comments})
   }
 
   if (isTaskError)
@@ -98,11 +95,11 @@ const EditTaskPage = memo(() => {
   }
 
   const defaultValues = () => {
-    const { title, assignee, startTime, endTime, status, progress } = taskResponse.data;
+    const { title, assignee, startTime, endTime, status, progress,comments } = taskResponse.data;
     if (authData.role === "Admin" && assignee === authData.userId) {
-      return { title, assignee: "Admin", startTime, endTime, status, progress }
+      return { title, assignee: "Admin", startTime, endTime, status, progress,comments}
     }
-    return { title, assignee, startTime, endTime, status, progress }
+    return { title, assignee, startTime, endTime, status, progress,comments }
   }
   
   return (

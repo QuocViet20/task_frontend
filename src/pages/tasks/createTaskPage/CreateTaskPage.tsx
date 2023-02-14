@@ -5,7 +5,7 @@ import { memo, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 
 // types
-import { ITaskFormData, User } from "../../../types";
+import { ITaskFormData, NewTask, User } from "../../../types";
 
 // service_api 
 import { addTask, getAssignee } from "../../../api/serviceApi";
@@ -43,7 +43,7 @@ const CreateTaskPage = memo(() => {
   }, [assigneeResponse])
 
   const createTaskMutation = useMutation({
-    mutationFn: (body: ITaskFormData) => {
+    mutationFn: (body: NewTask) => {
       return addTask(body)
     },
     onError: () => {
@@ -63,7 +63,7 @@ const CreateTaskPage = memo(() => {
     if(data.assignee ===  authData.role){
       data.assignee = authData.userId;
     }
-    createTaskMutation.mutate(data);
+    createTaskMutation.mutate({...data, comments:[]});
   }
 
 

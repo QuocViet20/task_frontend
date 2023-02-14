@@ -1,4 +1,43 @@
-.assignee_Item{
-  border: none;
-  background-color: light;
+.model{
+  margin-top: 80px;
+  margin-left: 450px;
+}
+.inputAssignee{
+  margin-left: 35px;
+  width: 120px;
+}
+.selectOption{
+  width: 315px;
+}
+.comment_title{
+  margin-left: 5px;
+  font-size: 25px;
+  color: rgb(20, 13, 13);
+}
+
+.input_comment {
+  border-radius: 5px;
+  border-color: rgb(8, 47, 129);
+  outline-style:none ;
+}
+.hearder_model {
+  margin-left: 100px;
+}
+
+.close_modal {
+  color: red;
+  font-size: 30px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.detailIcon{
+  font-size: 20px;
+  color: rgb(15, 50, 204);
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+.comment_text{
+  margin-top: -5px;
 }

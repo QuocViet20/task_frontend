@@ -1,5 +1,5 @@
 import axios from "axios";
-import { INewUser, User, ITaskFormData, Task } from "../types";
+import { INewUser, User, ITaskFormData, Task, NewTask} from "../types";
 import { API_URL } from "./consts";
 
 export const apiClient = axios.create({
@@ -15,12 +15,12 @@ export const createUser = (user: INewUser) => {
 
 export const getAssignee = () => apiClient.get("/users?role=User");
 
-export const addTask = (task: ITaskFormData) => {
+export const addTask = (task: NewTask) => {
   return apiClient.post("/tasks", task);
 };
 
-export const updateTask = (taskId: string, task: ITaskFormData) => {
-  return apiClient.put<ITaskFormData>(`/tasks/${taskId}`, task);
+export const updateTask = (taskId: string, task: NewTask) => {
+  return apiClient.put<NewTask>(`/tasks/${taskId}`, task);
 };
 
 export const getTask = (taskId: string) =>
