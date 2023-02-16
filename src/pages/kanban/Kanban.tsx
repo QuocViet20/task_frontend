@@ -20,8 +20,7 @@ function Kanban(){
   }
 
   return (
-    <div className="container">
-      <h1>Hello kanban</h1>
+    <div className="container mt-4">
       <KanbanComponent tasks={data.data}/>
     </div>
   )

@@ -9,7 +9,7 @@ import useAuth from "../../../hooks/useAuth";
 import './KanbanComponents.scss'
 
 //types
-import { Task, Status, ITaskFormData } from "../../../types";
+import { Task, Status, ITaskFormData, NewTask } from "../../../types";
 
 //api
 import { apiClient } from "../../../api/serviceApi";
@@ -85,26 +85,25 @@ const KanbanComponent = ({ tasks }: KanbanProps) => {
         columnTasks: newStartList,
       }
       const getOutTask= start.columnTasks.filter((task: Task, index: number) => index === source.index)[0];
-      const updateTask: ITaskFormData ={
+      const updateTask: NewTask ={
         ...getOutTask,
         status: end.id === "Todo" ? Status.Todo : end.id === "Doing" ? Status.Doing : Status.Done, 
         progress:end.id === "Todo" ? "0" : end.id === "Doing" ? "10": "100"
       }
       try {
-        await apiClient.put<ITaskFormData>(`/tasks/${getOutTask.id}`, updateTask);
+        await apiClient.put<NewTask>(`/tasks/${getOutTask.id}`, updateTask);
       } catch (error) {
         toast.error(`${error}`,{
           position: toast.POSITION.TOP_RIGHT
         })
       }
       const newEndList = end.columnTasks;
-      newEndList.splice(destination.index,0,start.columnTasks[source.index])
+      newEndList.splice(destination.index,0,updateTask)
       const newEndCol = {
         id: end.id,
         columnTasks:newEndList,
       };
       setColumns({...columns, [newStartCol.id]:newStartCol, [newEndCol.id]: newEndCol});
-      window.location.reload();
       return null;
     }
   

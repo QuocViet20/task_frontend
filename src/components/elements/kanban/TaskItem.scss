@@ -9,13 +9,13 @@
 .selectOption{
   width: 315px;
 }
-.comment_title{
+.comment_title_modal {
   margin-left: 5px;
   font-size: 25px;
   color: rgb(20, 13, 13);
 }
 
-.input_comment {
+.input_comment_modal {
   border-radius: 5px;
   border-color: rgb(8, 47, 129);
   outline-style:none ;
@@ -39,5 +39,34 @@
 }
 
 .comment_text{
+  margin-top: -5px;
+}
+
+.btn_comment, .btn_detail{
+  font-weight: 400;
+  font-size: 16px;
+  color: rgb(4, 116, 104);
+  cursor: pointer;
+}
+
+.btn_edit, .btn_delete {
+  cursor: pointer;
+}
+
+.comment_title {
+  font-size: 20px;
+  margin-left: 5px;
+  color: rgb(103, 51, 133);
+}
+
+.input_comment {
+  height: 30px;
+  border-color: rgb(5, 12, 104);
+  outline-style: none;
+  border-radius: 5px;
+}
+
+.rating{
+  margin-right: 15px;
   margin-top: -5px;
 }

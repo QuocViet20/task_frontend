@@ -1,6 +1,5 @@
 import React, { useState, useMemo} from "react";
 import { Draggable } from "react-beautiful-dnd";
-import { Link } from "react-router-dom";
 import {AiFillEdit, AiFillDelete} from 'react-icons/ai'
 import { BiDetail } from "react-icons/bi"
 import moment from "moment";
@@ -13,10 +12,13 @@ import { useForm } from "react-hook-form"
 //style
 import "./TaskItem.scss";
 
+//components
 import Loading from "../loading/Loading";
+import { Rating } from "../rating/Rating";
+import LikeComponents from "./LikeComponents";
 
 //api 
-import { getAssignee, deleteTask, updateTask } from "../../../api/serviceApi";
+import { getAssignee, updateTask } from "../../../api/serviceApi";
 
 //types
 import { User, Option, NewTask, Task, Comment } from "../../../types";
@@ -25,7 +27,8 @@ import useAuth from "../../../hooks/useAuth";
 
 interface TaskItemProps {
   task: Task;
-  index: number
+  index: number;
+  handleDelete: (id: number) =>void
 }
 
 interface UpdateTask {
@@ -36,8 +39,13 @@ interface UpdateTask {
   title: string;
 }
 
+interface LikeIcon {
+  id:string;
+  icon: JSX.Element
+}
+
 const TaskItem = ({
-  task, index
+  task, index, handleDelete
 }: TaskItemProps) => {
   const [ detail, setDetail ] = useState(false);
   const [showDelete, setShowDelete ] = useState(false)
@@ -49,16 +57,20 @@ const TaskItem = ({
   const [comments, setComments ] = useState(task.comments)
   const { authData } = useAuth();
   const [commentDisplay, setCommentDisplay ] = useState(false)
+  const [taskItem, setTaskItem ] = useState(task)
+  const [rating, setRating ] = useState(0);
+  const [likeItem, setlikeItem ] = useState<LikeIcon>({id:'',icon:<></>})
+  const [likeMode, setLikeMode ] = useState(false)
   const {
     register,
     formState: { errors },
   } = useForm<UpdateTask>({
     defaultValues:{
-      assignee: task.assignee,
-      startTime: task.startTime,
-      endTime: task.endTime,
-      progress:task.progress,
-      title: task.title,
+      assignee: taskItem.assignee,
+      startTime: taskItem.startTime,
+      endTime: taskItem.endTime,
+      progress:taskItem.progress,
+      title: taskItem.title,
     }
   });
 
@@ -82,19 +94,6 @@ const TaskItem = ({
       });
     },
   });
-  
-  const deleteMutation = useMutation({
-    mutationFn: (id: number) => deleteTask(id),
-    onSuccess: () => {
-      toast.success("Delete task success", {
-        position: toast.POSITION.TOP_RIGHT
-      });
-    }
-  })
-
-  const handleDelete = (id: number) => {
-    deleteMutation.mutate(id)
-  }
 
   const assigneOptions = useMemo(() => {
     if (_.isNil(assigneeResponse)) {
@@ -123,13 +122,22 @@ const TaskItem = ({
     }
   }
 
+  const handleRatingChange = (newRating: number) => {
+    setRating(newRating)
+  }
+  
+  const handleSelectLike = (item:LikeIcon) => {
+    setLikeMode(false)
+    setlikeItem(item);
+  }
+
   if(isAssigneeLoading){
     return <Loading />
   }
 
 
   return(
-    <Draggable key={task.id} draggableId={String(task.id)} index={index}>
+    <Draggable key={taskItem.id} draggableId={String(taskItem.id)} index={index}>
       {(provided, snapshot) => (
         <div 
         className={`mt-2 taskItem ${snapshot.isDragging ? "dragTodo" : ""}`}
@@ -139,17 +147,16 @@ const TaskItem = ({
         >
           <div className="mx-2">
             <div className="d-flex">
-
-            <p className="text-center text-dark pb-1 mt-1 col-11">{task.title}</p>
-            <span className="col detailIcon" onClick={() => setModelDetailTask(true) }><BiDetail/></span>
+            <p className="text-center text-dark pb-1 mt-1 col-11">{taskItem.title}</p>
+            <span className="col detailIcon" onClick={() => {setModelDetailTask(true); setCommentDisplay(false)} }><BiDetail/></span>
             </div>
             { detail && !editDisplay && 
             <div>
-              <p> Assignee: { assigneOptions.length > 0 ? assigneOptions?.find((item: Option) => Number(task.assignee) === item.value)?.label: ""}
+              <p> Assignee: { assigneOptions.length > 0 ? assigneOptions?.find((item: Option) => Number(taskItem.assignee) === item.value)?.label: ""}
               </p>
-              <p>Start time: {moment(task.startTime).format('DD/MM /YYYY HH:mm A')} </p>
-              <p>End time: {moment(task.endTime).format('DD/MM /YYYY HH:mm A')}</p>
-              <p>Progress: {task.progress}%</p>
+              <p>Start time: {moment(taskItem.startTime).format('DD/MM /YYYY HH:mm A')} </p>
+              <p>End time: {moment(taskItem.endTime).format('DD/MM /YYYY HH:mm A')}</p>
+              <p>Progress: {taskItem.progress}%</p>
               <input className="w-100" type="range" value={task.progress} />
             </div>
             }
@@ -160,7 +167,10 @@ const TaskItem = ({
                   <span> Assignee: </span>
                   <Form.Select  className="mx-3"
                   {...register("assignee")}
-                  onChange={(e) => editTaskMutation.mutate({...task,assignee:e.target.value})}
+                  onChange={(e) => {
+                    editTaskMutation.mutate({...task, assignee:e.target.value});
+                    setTaskItem({...taskItem, assignee:e.target.value})
+                  }}
                   >
                     {assigneOptions.map((assignee:Option) => (
                       <option value={assignee.value}>{assignee.label}</option>
@@ -172,7 +182,10 @@ const TaskItem = ({
                   <Form.Control  
                   type="datetime-local" 
                   {...register("startTime")}
-                  onChange={(e) => editTaskMutation.mutate({...task,startTime:e.target.value})}
+                  onChange={(e) => {
+                    editTaskMutation.mutate({...task, startTime:e.target.value});
+                    setTaskItem({...taskItem, startTime:e.target.value})
+                  }}
                   />
                 </div>
                   
@@ -181,7 +194,10 @@ const TaskItem = ({
                   <Form.Control 
                   type="datetime-local"
                   {...register("endTime")}
-                  onChange={(e) => editTaskMutation.mutate({...task,endTime:e.target.value})}
+                  onChange={(e) => {
+                    editTaskMutation.mutate({...task, endTime:e.target.value});
+                    setTaskItem({...taskItem, endTime:e.target.value})
+                  }}
                   />
                 </div>
                   <p>Progress: {valueRange}%</p>
@@ -194,22 +210,35 @@ const TaskItem = ({
                     {...register("progress")}
                     onChange={(e) => {
                       setValueRange(e.target.value);
+                      setTaskItem({...taskItem, progress: e.target.value})
                       editTaskMutation.mutate({...task,progress:e.target.value});
                     }}
                   />
               </div>
              }
           </div>
-          <div className="d-flex justify-content-end">
-          <span className="detail_btn px-2 text-warning" onClick={() => setCommentDisplay(!commentDisplay)}>Comment</span>
-            <span className="detail_btn px-2" onClick={() => {setDetail(!detail);setEditDisplay(false)}}>{detail?"Ẩn hiển thị":"Hiển thị"}</span>
-            <span className="px-4 text-dark" onClick={() => setEditDisplay(!editDisplay)}><AiFillEdit/></span>
-            <span className="text-danger mx-2" onClick={() => setShowDelete(true)}><AiFillDelete/></span>
+          <div className="d-flex ">
+             <div className="rating">
+              <Rating 
+                activeColor="#ffd700"
+                count={5}
+                size={20}
+                onChange={handleRatingChange}
+              />
+            </div>
+            <div>
+              {likeMode && <LikeComponents handleSelectLike = {handleSelectLike}/>}
+             {likeItem.id !=='' ? <span onClick={()=> setlikeItem({id:'',icon:<></>})}>{likeItem.icon}</span> :<span className=" btn_comment" onMouseOver={() => setLikeMode(true)} >Like</span>}
+              <span className="px-2 btn_comment" onClick={() => setCommentDisplay(!commentDisplay)}>Comment</span>
+             <span className="px-1 btn_detail" onClick={() => {setDetail(!detail);setEditDisplay(false)}}>{detail?"Hide show":"Show"}</span>
+              <span className="px-2 text-dark btn_edit" onClick={() => setEditDisplay(!editDisplay)}><AiFillEdit/></span>
+              <span className="text-danger mx-2 btn_delete" onClick={() => setShowDelete(true)}><AiFillDelete/></span>
+            </div>
           </div>
           {commentDisplay && 
             <div>
               <div className="border -1 mt-2"></div>
-              <h4 className="mt-1 text-secondary">Comments</h4>
+              <h4 className="mt-1 comment_title">Comments</h4>
               <div className="d-flex mb-3">
                 <input 
                   className="input_comment mx-1" 
@@ -218,7 +247,7 @@ const TaskItem = ({
                   name="comment" 
                   onChange={(e) => setComment(e.target.value)}
                 />
-                <button className="btn btn-primary" onClick={addComment}>Comment</button>
+                <button className="btn btn-primary btn-sm" onClick={addComment}>Comment</button>
               </div>
               {comments.length > 0 && comments.map((comment: Comment) => (
                 <div key={comment.userId} className="mx-2">
@@ -265,23 +294,23 @@ const TaskItem = ({
                       <h2 className="text-danger text-center mb-3">Infomation Task</h2>
                       <div className="d-flex">
                         <p className="text-dark">Title: </p>
-                        <p className="text-success mx-2">{task.title}</p>
+                        <p className="text-success mx-2">{taskItem.title}</p>
                       </div>
                       <div className="d-flex">
                         <p className="text-dark">Assignee: </p>
-                        <p className="text-success mx-2">{ assigneOptions.length > 0 ? assigneOptions?.find((item: Option) => Number(task.assignee) === item.value)?.label: ""}</p>
+                        <p className="text-success mx-2">{ assigneOptions.length > 0 ? assigneOptions?.find((item: Option) => Number(taskItem.assignee) === item.value)?.label: ""}</p>
                       </div>
                       <div className="d-flex">
                         <p className="text-dark">Start time: : </p>
-                        <p className="text-success mx-2">{moment(task.startTime).format('DD/MM /YYYY HH:mm A')}</p>
+                        <p className="text-success mx-2">{moment(taskItem.startTime).format('DD/MM /YYYY HH:mm A')}</p>
                       </div>
                       <div className="d-flex">
                         <p className="text-dark">End time: </p>
-                        <p className="text-success mx-2">{moment(task.endTime).format('DD/MM /YYYY HH:mm A')}</p>
+                        <p className="text-success mx-2">{moment(taskItem.endTime).format('DD/MM /YYYY HH:mm A')}</p>
                       </div>
                       <div className="d-flex">
                         <p className="text-dark">Progress: </p>
-                        <p className="text-success mx-2">{task.progress}%</p>
+                        <p className="text-success mx-2">{taskItem.progress}%</p>
                       </div>
                     </div>
                   }
@@ -293,7 +322,10 @@ const TaskItem = ({
                         <Form.Control  
                         type="text"
                         {...register("title")}
-                        onChange={(e) => editTaskMutation.mutate({...task,title:e.target.value})}
+                        onChange={(e) => {
+                          editTaskMutation.mutate({...task,title:e.target.value});
+                          setTaskItem({...taskItem, title: e.target.value});
+                        }}
                         />
                       </div>
                       <div className="d-inline-flex align-items-center w-100 mb-3" >
@@ -301,7 +333,10 @@ const TaskItem = ({
                         <div className="selectOption">
                           <Form.Select  className="inputAssignee"
                           {...register("assignee")}
-                          onChange={(e) => editTaskMutation.mutate({...task,assignee:e.target.value})}
+                          onChange={(e) => {
+                            editTaskMutation.mutate({...task,assignee:e.target.value});
+                            setTaskItem({...taskItem, assignee: e.target.value});
+                          }}
                           >
                             {assigneOptions.map((assignee:Option) => (
                               <option value={assignee.value}>{assignee.label}</option>
@@ -314,7 +349,10 @@ const TaskItem = ({
                         <Form.Control  
                         type="datetime-local" 
                         {...register("startTime")}
-                        onChange={(e) => editTaskMutation.mutate({...task,startTime:e.target.value})}
+                        onChange={(e) => {
+                          editTaskMutation.mutate({...task,startTime:e.target.value});
+                          setTaskItem({...taskItem, startTime: e.target.value});
+                        }}
                         />
                       </div>  
                       <div className="d-inline-flex align-items-center w-100 mb-3">
@@ -322,7 +360,10 @@ const TaskItem = ({
                         <Form.Control 
                         type="datetime-local"
                         {...register("endTime")}
-                        onChange={(e) => editTaskMutation.mutate({...task,endTime:e.target.value})}
+                        onChange={(e) => {
+                          editTaskMutation.mutate({...task,endTime:e.target.value});
+                          setTaskItem({...taskItem, endTime: e.target.value});
+                        }}
                         />
                       </div>
                       <p>Progress: {valueRange}%</p>
@@ -335,6 +376,7 @@ const TaskItem = ({
                           {...register("progress")}
                           onChange={(e) => {
                             setValueRange(e.target.value);
+                            setTaskItem({...taskItem, progress: e.target.value});
                             editTaskMutation.mutate({...task,progress:e.target.value});
                         }}
                       />
@@ -350,10 +392,10 @@ const TaskItem = ({
               </div>
 
               <div className="border -1 mt-3"></div>
-              <h2 className="px-2 comment_title mt-2">Comments</h2>
+              <h2 className="px-2 comment_title_modal mt-2">Comments</h2>
               <div className="d-flex mb-2">
                 <input 
-                  className="w-75 mx-3 input_comment" 
+                  className="w-75 mx-3 input_comment_modal" 
                   type="text" 
                   value={comment}
                   name="comment" 

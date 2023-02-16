@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Nav, Container, Navbar, NavDropdown } from 'react-bootstrap';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { CgSun } from "react-icons/cg";
+import { HiMoon } from "react-icons/hi";
 
 // type
 import { PageLayoutProps, RoutePath } from '../../../types';
@@ -8,9 +10,13 @@ import useAuth from '../../../hooks/useAuth';
 import "./pageLayout.scss"
 
 const PageLayout = ({ children }: PageLayoutProps) => {
-  const { authData, isLoggedAdmin, isLoggedIn, clearAuth } = useAuth();
+  const { authData, isLoggedIn, clearAuth } = useAuth();
+  const [ isDark, setIsDark ] = useState(false)
   const navigate = useNavigate();
-  console.log(isLoggedIn)
+
+  useEffect(() => {
+    setIsDark(isDark)
+  },[isDark])
 
   const logout = () => {
     clearAuth();
@@ -19,7 +25,7 @@ const PageLayout = ({ children }: PageLayoutProps) => {
   const link = useLocation()
 
   return (
-    <div>
+    <div className={isDark ?"bg-dark":"bg-light"}>
       <nav className="navbar navbar-expand-lg navbar_bg">
         <div className="container">
           <a className="prefix_brands" href="/">Brands</a>
@@ -41,13 +47,18 @@ const PageLayout = ({ children }: PageLayoutProps) => {
                 </li>
               </div>  }
               {isLoggedIn && 
+              <div className='d-flex'>
                 <li className="nav-item">
                   <a className={link.pathname === `/users/${authData.userId}` ? "navbar_item_active ":"navBar_item "} href={`/users/${authData.userId}`} >My tasks</a>
                 </li>
+                <li className="nav-item">
+                  <a className={link.pathname === RoutePath.Kanban? "navbar_item_active ":"navBar_item "} href={RoutePath.Kanban} >Kanban</a>
+                </li>
+              </div>
               }
             </ul>
             {isLoggedIn ? 
-                <NavDropdown title={authData.username} id="navbarScrollingDropdown" className='text_username'>
+                <NavDropdown title={authData.username} id="navbarScrollingDropdown" className='text_username mx-2'>
                 <NavDropdown.Item as={NavLink} to={`/users/${authData.userId}/myInformation`}>Personal Infomation</NavDropdown.Item>
                 <NavDropdown.Item as={NavLink} to={RoutePath.ResetPasswordUser}>
                   Reset Password
@@ -64,12 +75,16 @@ const PageLayout = ({ children }: PageLayoutProps) => {
               </li>
           </ul>
             }
-         
-            
+          <div className='theme_change px-2' onClick={() => setIsDark(!isDark)} >
+            {isDark ?
+              <CgSun className="theme_option"/>:
+              <HiMoon className="theme_option"/>
+             }
+          </div>
           </div>
         </div>
       </nav>
-      <div>{children}</div>
+      <div >{children}</div>
     </div>
   )
 }

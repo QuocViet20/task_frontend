@@ -4,9 +4,9 @@ import "./access/styles/index.scss"
 function App() {
 
   return (
-    <>
-      <RoutesPage/>
-    </>
+    <div className='bg-dark'>
+      <RoutesPage />
+    </div >
   );
 }
 
