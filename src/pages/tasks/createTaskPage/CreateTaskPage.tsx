@@ -63,7 +63,7 @@ const CreateTaskPage = memo(() => {
     if(data.assignee ===  authData.role){
       data.assignee = authData.userId;
     }
-    createTaskMutation.mutate({...data, comments:[]});
+    createTaskMutation.mutate({...data, comments:[],rating:0,feelings:[]});
   }
 
 

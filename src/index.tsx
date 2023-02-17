@@ -20,6 +20,7 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
+  <React.StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <App />
@@ -27,4 +28,5 @@ root.render(
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </BrowserRouter>
+    </React.StrictMode>
 );

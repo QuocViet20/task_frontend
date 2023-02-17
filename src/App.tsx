@@ -4,7 +4,7 @@ import "./access/styles/index.scss"
 function App() {
 
   return (
-    <div className='bg-dark'>
+    <div >
       <RoutesPage />
     </div >
   );

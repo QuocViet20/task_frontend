@@ -61,6 +61,8 @@ export interface NewTask {
   title: string;
   status: Status;
   comments: Comment[];
+  feelings: Feeling[];
+  rating: number,
 }
 
 export interface Task {
@@ -72,6 +74,8 @@ export interface Task {
   title: string;
   status: Status;
   comments:Comment[];
+  feelings: Feeling[];
+  rating: number,
 }
 
 export interface Assignee {
@@ -86,8 +90,13 @@ export interface Option {
 }
 
 export interface Comment{
-  userId?:number |string
+  userId?: number | string;
   comment: string
+}
+
+export interface Feeling {
+  userId?: number | string;
+  idIcon: string;
 }
 
 export interface EditUserForm {

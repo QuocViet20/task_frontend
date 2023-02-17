@@ -109,8 +109,8 @@ const ListTaskKanban = ({
     }
     data.status = id === "Todo"?Status.Todo:id === "Doing"? Status.Doing:Status.Done;
     data.progress = data.status ==="Todo"?"0":data.status === "Doing"?data.progress:"100"
-    creatTaskMutation.mutate({...data,comments:[]});
-    setTasks([{...data,comments:[]},...columnTasks]);
+    creatTaskMutation.mutate({...data,comments:[],feelings: [],rating:0});
+    setTasks([{...data,comments:[], feelings:[], rating:0},...columnTasks]);
     reset({
       title:"",
       assignee:"",
@@ -136,7 +136,6 @@ const ListTaskKanban = ({
   }
 
   return (
-   
       <Droppable droppableId={id}>
         {(provided, snapshot) => (
           <div

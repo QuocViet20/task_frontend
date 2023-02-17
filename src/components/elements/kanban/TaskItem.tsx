@@ -21,7 +21,10 @@ import LikeComponents from "./LikeComponents";
 import { getAssignee, updateTask } from "../../../api/serviceApi";
 
 //types
-import { User, Option, NewTask, Task, Comment } from "../../../types";
+import { User, Option, NewTask, Task, Comment, Feeling } from "../../../types";
+
+// const
+import { likeArrays } from "./LikeComponents";
 
 import useAuth from "../../../hooks/useAuth";
 
@@ -40,8 +43,8 @@ interface UpdateTask {
 }
 
 interface LikeIcon {
-  id:string;
-  icon: JSX.Element
+  id?: string | undefined;
+  icon: JSX.Element 
 }
 
 const TaskItem = ({
@@ -58,9 +61,13 @@ const TaskItem = ({
   const { authData } = useAuth();
   const [commentDisplay, setCommentDisplay ] = useState(false)
   const [taskItem, setTaskItem ] = useState(task)
-  const [rating, setRating ] = useState(0);
-  const [likeItem, setlikeItem ] = useState<LikeIcon>({id:'',icon:<></>})
-  const [likeMode, setLikeMode ] = useState(false)
+  const [rating, setRating ] = useState(taskItem.rating);
+  const [likeMode, setLikeMode ] = useState(false);
+  const [feelingsStatus, setFeelingsStatus] = useState<Feeling[]>(taskItem.feelings);
+  const myFeeling = feelingsStatus.find((item: Feeling) => item.userId === authData.userId);
+  const myIdIcon = myFeeling?.idIcon;
+  const initialLikeItem = feelingsStatus.length >0 && myIdIcon === undefined ? {id:'', icon:<></>}:likeArrays.find((item:LikeIcon) => item.id === myIdIcon)
+  const [likeItem, setLikeItem ] = useState(initialLikeItem)
   const {
     register,
     formState: { errors },
@@ -123,14 +130,43 @@ const TaskItem = ({
   }
 
   const handleRatingChange = (newRating: number) => {
+    editTaskMutation.mutate({...task,rating:newRating})
     setRating(newRating)
   }
   
   const handleSelectLike = (item:LikeIcon) => {
     setLikeMode(false)
-    setlikeItem(item);
+    setLikeItem({id: item.id as string, icon: item.icon});
+    const feelingExist = feelingsStatus.find((item:Feeling) => item.userId === authData.userId);
+    if(feelingExist && feelingsStatus.length>0){
+     const indexFeeling= feelingsStatus.findIndex((item: Feeling) => item.userId === authData.userId);
+     feelingsStatus[indexFeeling].idIcon = item.id as string;
+     setFeelingsStatus(feelingsStatus)
+     editTaskMutation.mutate({...task, feelings:feelingsStatus})
+    } else {
+      const newFeelingsStatus = [...feelingsStatus];
+      newFeelingsStatus.push({userId: authData.userId, idIcon: item.id as string})
+      setFeelingsStatus(newFeelingsStatus);
+      editTaskMutation.mutate({...task, feelings:newFeelingsStatus})
+    }
   }
 
+  const handleRemoveLikeIcon = () => {
+    setLikeItem({id:'',icon:<></>});
+    const newFeelings = feelingsStatus.filter((item:Feeling) => item.userId !== authData.userId);
+    setFeelingsStatus(newFeelings);
+    editTaskMutation.mutate({...task, feelings: newFeelings});
+    setLikeMode(false);
+  }
+  const handleLikeIcon = () => {
+    setLikeItem(likeArrays[0]);
+    setLikeMode(false)
+    const newFeelingsStatus = [...feelingsStatus];
+    newFeelingsStatus.push({userId: authData.userId, idIcon: likeArrays[0].id as string})
+    setFeelingsStatus(newFeelingsStatus);
+    editTaskMutation.mutate({...task, feelings:newFeelingsStatus});
+
+  }
   if(isAssigneeLoading){
     return <Loading />
   }
@@ -217,22 +253,73 @@ const TaskItem = ({
               </div>
              }
           </div>
-          <div className="d-flex ">
-             <div className="rating">
+          <div>
+            <div className="d-flex justify-content-between align-items-center">
+              <span 
+                className="text-primary"
+              >
+                {myFeeling && feelingsStatus.length > 0?`you, ${feelingsStatus.length}like`:""}
+              </span>
+            {likeMode && 
+              <div 
+                className="list_icon_like " 
+                onMouseLeave={() => setLikeMode(false) } 
+              >
+                <LikeComponents handleSelectLike = {handleSelectLike}/>
+              </div>
+            }       
+              <span className="text-primary" onClick={() => setCommentDisplay(!commentDisplay)}>{comments.length>0?`${comments.length} comments`:""}</span>
+            </div>
+          <div className="d-flex mt-1">
+            <div className="rating">
               <Rating 
                 activeColor="#ffd700"
                 count={5}
                 size={20}
                 onChange={handleRatingChange}
+                value={rating}
               />
-            </div>
-            <div>
-              {likeMode && <LikeComponents handleSelectLike = {handleSelectLike}/>}
-             {likeItem.id !=='' ? <span onClick={()=> setlikeItem({id:'',icon:<></>})}>{likeItem.icon}</span> :<span className=" btn_comment" onMouseOver={() => setLikeMode(true)} >Like</span>}
-              <span className="px-2 btn_comment" onClick={() => setCommentDisplay(!commentDisplay)}>Comment</span>
-             <span className="px-1 btn_detail" onClick={() => {setDetail(!detail);setEditDisplay(false)}}>{detail?"Hide show":"Show"}</span>
-              <span className="px-2 text-dark btn_edit" onClick={() => setEditDisplay(!editDisplay)}><AiFillEdit/></span>
-              <span className="text-danger mx-2 btn_delete" onClick={() => setShowDelete(true)}><AiFillDelete/></span>
+            </div>       
+             {likeItem?.id === undefined || likeItem?.id ==="" ? 
+              <span 
+                className=" btn_comment px-3" 
+                onMouseOver={() => setLikeMode(true)} 
+                onClick={handleLikeIcon} 
+                >
+                Like
+              </span>
+             :
+              <span 
+                onClick={handleRemoveLikeIcon} 
+                className="icon_active" 
+                > 
+                {likeItem.icon} <span className=" btn_comment text-primary" onMouseOver={() => setLikeMode(true)}>Like</span> 
+              </span> 
+              }
+              <span 
+                className="px-2 btn_comment" 
+                onClick={() => setCommentDisplay(!commentDisplay)}
+              >
+                Comment
+              </span>
+              <span 
+                className="px-1 btn_detail" 
+                onClick={() => {setDetail(!detail);setEditDisplay(false)}}
+                >
+                  {detail?"Hide":"Show"}
+                </span>
+              <span 
+                className="px-2 text-dark btn_edit" 
+                onClick={() => setEditDisplay(!editDisplay)}
+              >
+                <AiFillEdit/>
+              </span>
+              <span 
+                className="text-danger mx-2 btn_delete" 
+                onClick={() => setShowDelete(true)}
+                >
+                  <AiFillDelete/>
+                </span>
             </div>
           </div>
           {commentDisplay && 

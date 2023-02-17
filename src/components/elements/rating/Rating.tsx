@@ -6,6 +6,7 @@ export interface IRatingProps {
   count?: number;
   size?: number;
   onChange?: (newRating: number) => void;
+  value?:number
 }
 
 const RatingComponent: React.FC<IRatingProps> = ({
@@ -13,6 +14,7 @@ const RatingComponent: React.FC<IRatingProps> = ({
   count,
   size,
   onChange,
+  value
 }) => {
   return (
     <ReactStars
@@ -21,6 +23,7 @@ const RatingComponent: React.FC<IRatingProps> = ({
       size={size}
       onChange={onChange}
       isHalf={true}
+      value={value}
     />
   );
 };

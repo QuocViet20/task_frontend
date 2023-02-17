@@ -7,7 +7,7 @@ import './LikeComponents.scss'
 
 
 interface LikeIcon {
-  id:string;
+  id?:string | undefined;
   icon: JSX.Element
 }
 
@@ -15,27 +15,29 @@ interface LikeComponentprops {
   handleSelectLike:(item:LikeIcon) =>void;
 }
 
+export   const likeArrays = [
+  {id:'like',
+    icon: <AiFillLike/>
+  },
+  {id:'love',
+  icon: <FcLike/>
+  },
+  {id:'smile',
+  icon: <AiOutlineSmile/>
+  },
+  {id:'sad',
+  icon: <ImSad/>
+  },
+  {id:'cry',
+  icon: <FaSadCry/>
+  },
+  {id:'angry',
+  icon: <FaAngry/>
+  },
+]
+
+
 const LikeComponents = ({handleSelectLike}:LikeComponentprops)=> {
-  const likeArrays = [
-    {id:'like',
-      icon: <AiFillLike/>
-    },
-    {id:'love',
-    icon: <FcLike/>
-    },
-    {id:'smile',
-    icon: <AiOutlineSmile/>
-    },
-    {id:'sad',
-    icon: <ImSad/>
-    },
-    {id:'cry',
-    icon: <FaSadCry/>
-    },
-    {id:'angry',
-    icon: <FaAngry/>
-    },
-  ]
 
   return(
     <div className="d-flex">

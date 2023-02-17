@@ -84,7 +84,7 @@ const EditTaskPage = memo(() => {
       data.assignee = authData.userId
     }
     console.log(data)
-    editTaskMutation.mutate({...data, comments:defaultValues().comments})
+    editTaskMutation.mutate({...data, comments:defaultValues().comments, feelings: defaultValues().feelings,rating: defaultValues().rating})
   }
 
   if (isTaskError)
@@ -95,11 +95,11 @@ const EditTaskPage = memo(() => {
   }
 
   const defaultValues = () => {
-    const { title, assignee, startTime, endTime, status, progress,comments } = taskResponse.data;
+    const { title, assignee, startTime, endTime, status, progress, comments, feelings,rating} = taskResponse.data;
     if (authData.role === "Admin" && assignee === authData.userId) {
-      return { title, assignee: "Admin", startTime, endTime, status, progress,comments}
+      return { title, assignee: "Admin", startTime, endTime, status, progress, comments, feelings, rating}
     }
-    return { title, assignee, startTime, endTime, status, progress,comments }
+    return { title, assignee, startTime, endTime, status, progress, comments, feelings, rating }
   }
   
   return (

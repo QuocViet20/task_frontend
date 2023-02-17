@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Nav, Container, Navbar, NavDropdown } from 'react-bootstrap';
+import { NavDropdown } from 'react-bootstrap';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { CgSun } from "react-icons/cg";
 import { HiMoon } from "react-icons/hi";
@@ -14,15 +14,12 @@ const PageLayout = ({ children }: PageLayoutProps) => {
   const [ isDark, setIsDark ] = useState(false)
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setIsDark(isDark)
-  },[isDark])
-
   const logout = () => {
     clearAuth();
     navigate(RoutePath.Login)
   }
   const link = useLocation()
+ 
 
   return (
     <div className={isDark ?"bg-dark":"bg-light"}>
