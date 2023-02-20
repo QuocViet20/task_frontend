@@ -76,7 +76,7 @@ const KanbanComponent = ({ tasks }: KanbanProps) => {
         id: start.id,
         columnTasks: newListTask,
       }
-      setColumns({...columns, [newCol.id]:newCol});
+      setColumns({...columns, [newCol.id]: newCol});
       return null;
     } else {
       const newStartList = start.columnTasks.filter((task: Task, index: number) => index !== source.index);

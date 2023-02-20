@@ -1,0 +1,138 @@
+[33mcommit 0e1d84fae0d630d75cd1361d5fe85ab6c5d1f85b[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Fri Feb 17 17:38:08 2023 +0700
+
+    update
+
+[33mcommit 62f216531383ba9818eee886694faeffb3d4a14f[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Thu Feb 16 17:42:22 2023 +0700
+
+    update
+
+[33mcommit d24af84982cf13b82083cef12a28824f9d731a3a[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Tue Feb 14 17:23:40 2023 +0700
+
+    update kanbanPage
+
+[33mcommit 6488d5efb6e9aa6885f69be8f48770bf5a7d2f5b[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Mon Feb 13 16:55:06 2023 +0700
+
+    update
+
+[33mcommit 5530e228b7e64a02f7ad2b35e9226e1b0d8ea65c[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Fri Feb 10 17:40:25 2023 +0700
+
+    update kanban
+
+[33mcommit 5c9fc7e45b93f44f3ae2bff99334dd000c338830[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Wed Feb 8 17:52:28 2023 +0700
+
+    update
+
+[33mcommit 5a44a857a6f3d98af4064c566f86276861fdb473[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Wed Feb 8 17:35:42 2023 +0700
+
+    update layout, style css
+
+[33mcommit 9b479f919ac9c90891e425c10e7a7d55d8e2b315[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Tue Feb 7 17:43:37 2023 +0700
+
+    thêm access
+
+[33mcommit dc966417325c3ea9cc179449b67010f3d9a0e2a1[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Tue Feb 7 08:33:22 2023 +0700
+
+    first_commit, create_new_remote
+
+[33mcommit 7b62e1e60e2a29c1c67059db745dc8c346a7ab0e[m[33m ([m[1;31morigin/task_fe[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mtask_fe[m[33m)[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Mon Feb 6 23:38:08 2023 +0700
+
+    config_api,types
+
+[33mcommit b29f591fb6aade409af706159b87687848fa445b[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Mon Feb 6 18:26:01 2023 +0700
+
+    update
+
+[33mcommit c9d00479603baec22121cce23843eaf647bd8821[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Mon Feb 6 14:54:17 2023 +0700
+
+    update
+
+[33mcommit bcb711d3e9996ab3839d947bd1fea9a6124f17d8[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Sun Feb 5 16:56:01 2023 +0700
+
+    update
+
+[33mcommit c883c38aab415eedf3d5f944a5c6ddbc2712a699[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Fri Feb 3 18:08:22 2023 +0700
+
+    update
+
+[33mcommit 4d175522b8af499983386190aa627707c096cf95[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Thu Feb 2 18:00:16 2023 +0700
+
+    update
+
+[33mcommit 0a0d6e0340c5a65d153aa32e8d2c210b08458159[m
+Merge: 14b6b7b 9e329a7
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Wed Feb 1 18:30:12 2023 +0700
+
+    Merge branch 'task_fe' of https://github.com/QuocViet20/task-mangage into task_fe
+
+[33mcommit 14b6b7b40d59f19cc33a9f442eede81e27ec803e[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Wed Feb 1 17:55:34 2023 +0700
+
+    update
+
+[33mcommit 9e329a7ef61a58af79c754f72586bfb284e528ff[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Tue Jan 31 23:46:27 2023 +0700
+
+    update
+
+[33mcommit e6b3a7e8653a2e0126a26bb74aedf10d1520580f[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Tue Jan 31 18:00:01 2023 +0700
+
+    first commit
+
+[33mcommit c6a8f714fe0243ae77728cd7630a13b84ffe85c7[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Mon Jan 30 23:04:34 2023 +0700
+
+    update
+
+[33mcommit 997398c3feb032308810e6026c8e28654aeebab7[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Sun Jan 29 23:00:28 2023 +0700
+
+    update
+
+[33mcommit d578e48a7ac64c2485c73a56d8ea78e18f8785e6[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Sun Jan 29 20:13:49 2023 +0700
+
+    first commit
+
+[33mcommit e8ffd722cc09559b40788be0fa39b6a3bd373a8a[m
+Author: QuocViet20 <luongquocvietbk58@gmail.com>
+Date:   Sat Jan 28 09:29:59 2023 +0700
+
+    Initialize project using Create React App

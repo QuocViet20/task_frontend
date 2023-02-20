@@ -28,5 +28,5 @@ root.render(
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </BrowserRouter>
-    </React.StrictMode>
+  </React.StrictMode>
 );
